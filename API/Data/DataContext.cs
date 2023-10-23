@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using API.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
 
@@ -11,5 +12,7 @@ public class DataContext : DbContext
     }
 
     public DbSet<Patient> Patients {get; set;}
+
+    public DbSet<Doctor> Doctors {get; set;}
 
 }
