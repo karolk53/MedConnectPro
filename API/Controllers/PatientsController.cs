@@ -19,12 +19,14 @@ public class PatientsController : BaseApiController
     }
 
 
+    //[Authorize(Roles ="Admin")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Patient>>> GetPatients(){
-        return Ok(_patientRepository.GetAllPatientsAsync());
+        var patients = await _patientRepository.GetAllPatientsAsync();
+        return Ok(patients);
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<PatientProfileDto>> GetPatient(int id){
         return await _patientRepository.GetPatientById(id);

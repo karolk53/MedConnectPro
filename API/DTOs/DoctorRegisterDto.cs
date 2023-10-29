@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using API.Controllers;
 
 namespace API.DTOs
 {
-    public class DoctorLoginDto : BaseApiController
+    public class DoctorRegisterDto
     {
         [EmailAddress]
         [Required]

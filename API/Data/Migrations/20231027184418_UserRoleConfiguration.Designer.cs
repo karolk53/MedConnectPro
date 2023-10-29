@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231027184418_UserRoleConfiguration")]
+    partial class UserRoleConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
@@ -23,25 +26,13 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("PWZ")
                         .HasColumnType("TEXT");
 
-                    b.Property<byte[]>("PasswordHash")
-                        .HasColumnType("BLOB");
+                    b.Property<string>("firstName")
+                        .HasColumnType("TEXT");
 
-                    b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("BLOB");
-
-                    b.Property<string>("Phone")
+                    b.Property<string>("lastName")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -55,13 +46,34 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedUserName")
                         .HasColumnType("TEXT");
 
                     b.Property<byte[]>("PasswordHash")
@@ -73,6 +85,21 @@ namespace API.Data.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Patients");
@@ -82,9 +109,6 @@ namespace API.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("DoctorId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("PatientId")
@@ -101,8 +125,6 @@ namespace API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DoctorId");
-
                     b.HasIndex("PatientId");
 
                     b.ToTable("UserRole");
@@ -110,18 +132,9 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.UserRole", b =>
                 {
-                    b.HasOne("API.Entities.Doctor", null)
-                        .WithMany("UserRoles")
-                        .HasForeignKey("DoctorId");
-
                     b.HasOne("API.Entities.Patient", null)
                         .WithMany("UserRoles")
                         .HasForeignKey("PatientId");
-                });
-
-            modelBuilder.Entity("API.Entities.Doctor", b =>
-                {
-                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("API.Entities.Patient", b =>
