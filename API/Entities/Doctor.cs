@@ -1,12 +1,8 @@
 ﻿namespace API.Entities;
 
-public class Doctor
+public class Doctor : User
 {
     public int Id { get; set; }
-
-    public string firstName { get; set; }
-
-    public string lastName {get; set;}
 
     public string PWZ { get; set; }
 

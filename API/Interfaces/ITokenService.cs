@@ -4,6 +4,6 @@ namespace API.Interfaces
 {
     public interface ITokenService
     {
-        string CreateToken(Patient patient);
+        string CreateToken(User user);
     }
 }

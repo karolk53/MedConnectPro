@@ -1,4 +1,3 @@
-
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -18,11 +17,11 @@ namespace API.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
         }
 
-        public string CreateToken(Patient patient)
+        public string CreateToken(User user)
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Email, patient.Email),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
             };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
