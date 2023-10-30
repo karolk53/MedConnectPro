@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center mt-5">
     <div class="col-3">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="text-center mb-4">
                 <h1 class="mb-3">Login</h1>
             </div>
@@ -14,7 +14,7 @@
                 <label for="floatingPassword">Password</label>
             </div>
             <div class="d-grid">
-                <button class="btn btn-lg btn-primary mt-3" type="submit">Sign in</button>
+                <button [disabled]="loginForm.invalid" class="btn btn-lg btn-primary mt-3" type="submit">Sign in</button>
             </div>
         </form>
     </div>

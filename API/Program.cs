@@ -13,7 +13,7 @@ var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-//app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200")); //DLA ANGULARA
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200")); //DLA ANGULARA
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
