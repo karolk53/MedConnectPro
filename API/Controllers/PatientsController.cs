@@ -1,4 +1,5 @@
-﻿using API.DTOs;
+﻿using System.Security.Claims;
+using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
@@ -19,17 +20,20 @@ public class PatientsController : BaseApiController
     }
 
 
-    //[Authorize(Roles ="Admin")]
+    [Authorize(Policy ="AdminOnly")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Patient>>> GetPatients(){
         var patients = await _patientRepository.GetAllPatientsAsync();
         return Ok(patients);
     }
 
-    //[Authorize]
+    [Authorize(Policy = "PatientOnly")]
     [HttpGet("{id}")]
     public async Task<ActionResult<PatientProfileDto>> GetPatient(int id){
-        return await _patientRepository.GetPatientById(id);
+        var userId = int.Parse(this.User.Claims.First(i => i.Type == "Id").Value);
+        if(userId == id) return await _patientRepository.GetPatientById(id);
+        return BadRequest("You dont have acces to this profile!");
+        
     }   
 
 }

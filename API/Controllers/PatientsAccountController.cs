@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+    [Route("/api/patients/account")]
     public class PatientsAccountController : BaseApiController
     {
         private readonly ITokenService _tokenService;
@@ -35,7 +36,8 @@ namespace API.Controllers
             {
                 Email = registerDto.Email.ToLower(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
+                PasswordSalt = hmac.Key,
+                UserRole = "Patient"
             };
 
             _context.Patients.Add(patient);

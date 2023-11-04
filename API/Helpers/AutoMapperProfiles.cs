@@ -11,6 +11,7 @@ namespace API.Helpers
         {
             CreateMap<Patient, PatientDto>();
             CreateMap<Patient, PatientProfileDto>();
+            CreateMap<Doctor, DoctorListDto>();
         }
     }
 }

@@ -5,6 +5,8 @@ namespace API.Entities
     public class User
     {
 
+        public int Id {get; set;}
+
         public string FirstName {get; set;}
 
         public string LastName {get; set;}
@@ -17,7 +19,7 @@ namespace API.Entities
 
         public byte[] PasswordSalt { get; set; }
 
-        public virtual ICollection<UserRole> UserRoles {get; set;}
+        public string UserRole {get; set;}
 
     }
 }
