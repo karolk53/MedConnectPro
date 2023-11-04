@@ -1,21 +1,15 @@
-<div class="d-flex justify-content-center mt-5">
-    <div class="col-3">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div class="text-center mb-4">
-                <h1 class="mb-3">Login</h1>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="email" formControlName="email" class="form-control" id="floatingInput" placeholder="Emial">
-                <label for="floatingInput">Email address</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" formControlName="password" class="form-control" id="floatingPassword"
-                    placeholder="Password">
-                <label for="floatingPassword">Password</label>
-            </div>
-            <div class="d-grid">
-                <button [disabled]="loginForm.invalid" class="btn btn-lg btn-primary mt-3" type="submit">Sign in</button>
-            </div>
-        </form>
-    </div>
+<div class="customform--wrapper">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="customform--header">
+            <h1 class="mb-3">Login</h1>
+        </div>
+        <app-text-input [formControl]="loginForm.controls['email']" [label]="'Emai Address'"></app-text-input>
+        <app-text-input [formControl]="loginForm.controls['password']" [type]="'password'"
+            [label]="'Password'"></app-text-input>
+        <div class="customform--actions">
+            <app-submit-button [disabled]="loginForm.invalid" [text]="'Login'"
+                (clickEvent)="onSubmit()"></app-submit-button>
+            <a routerLink="/account/register">Create account.</a>
+        </div>
+    </form>
 </div>

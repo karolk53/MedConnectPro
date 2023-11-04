@@ -1,0 +1,33 @@
+@import "../../../styles.scss";
+
+.header {
+  background-color: #3498dbd3;
+
+  &--content {
+    max-width: 1440px;
+    height: 100px;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h2 {
+      color: $color-white;
+      margin-left: 100px;
+    }
+  }
+
+  &--breadcrumb {
+    margin-right: 100px;
+    color: $color-white;
+
+    a {
+      color: $color-white;
+      text-decoration: none;
+    }
+
+    &--active {
+      color: #000 !important;
+    }
+  }
+}

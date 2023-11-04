@@ -11,22 +11,21 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginComponent {
   returnUrl = '';
 
-  constructor(private accountService: AccountService, private router: Router, 
-    private activatedRoute: ActivatedRoute) {
-    }
-  
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   loginForm = new FormGroup({
-    email: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', Validators.required),
   });
 
-
-  
   onSubmit() {
-    AccountService
+    AccountService;
     this.accountService.login(this.loginForm.value).subscribe({
-      next: () => this.router.navigateByUrl(this.returnUrl)
+      next: () => this.router.navigateByUrl(this.returnUrl),
     });
   }
 }

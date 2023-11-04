@@ -1,0 +1,41 @@
+@import "../../../../styles.scss";
+
+.navLink {
+  @include font-size(+2px);
+  position: relative;
+
+  a {
+    color: transparent;
+    background-image: linear-gradient(90deg, $primary-color 50%, $text-color 50%);
+    background-position: 100%;
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    transition: background-position 0.7s ease;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -5px;
+    height: 3px;
+    background-image: linear-gradient(90deg, $primary-color 50%, $navbarBackground-color 50%);
+    background-position: 100%;
+    background-size: 200% 100%;
+    transition: background-position 0.7s ease; // Zmień transition na background-position
+
+  }
+
+  &:hover{
+    a{
+        background-position: 0;
+    }
+
+    &::after {
+        background-position: 0;
+    }
+  }
+}
