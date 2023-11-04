@@ -16,7 +16,7 @@ namespace API.Data
         {
             this._mapper = mapper;
             this._context = context;
-            
+
         }
 
         public async Task<Doctor> GetDoctorById(int id)

@@ -13,13 +13,13 @@ namespace API.Controllers
         private readonly IDoctorRepository _repository;
         private readonly IMapper _mapper;
         private readonly ISpecialisationRepository _specialisationRepository;
-        
-        public DoctorsController(IDoctorRepository repository, ISpecialisationRepository specialisationRepository ,IMapper mapper)
+
+        public DoctorsController(IDoctorRepository repository, ISpecialisationRepository specialisationRepository, IMapper mapper)
         {
             this._specialisationRepository = specialisationRepository;
             this._mapper = mapper;
             this._repository = repository;
-            
+
         }
 
         [HttpGet]
@@ -35,6 +35,6 @@ namespace API.Controllers
         {
             var doctor = await _repository.GetDoctorByIdAsync(User.GetUserId());
             return Ok(doctor);
-        } 
+        }
     }
 }
