@@ -1,0 +1,24 @@
+<div class="customform--wrapper">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="customform--header">
+            <h1 class="mb-3">Register</h1>
+        </div>
+
+
+        <app-text-input [formControl]="registerForm.controls['email']" [label]="'Emai Address'"></app-text-input>
+        <app-text-input [formControl]="registerForm.controls['password']" [type]="'password'"
+            [label]="'Password'"></app-text-input>
+        <app-text-input [formControl]="registerForm.controls['confirmPassword']" [type]="'password'"
+            [label]="'Confirm Password'"></app-text-input>
+
+
+        <div class="customform--actions">
+            <app-submit-button [disabled]="registerForm.invalid" [text]="'Register'"
+                (clickEvent)="onSubmit()"></app-submit-button>
+            <a routerLink="/account/login">Login to your account</a>
+
+        </div>
+
+    </form>
+
+</div>

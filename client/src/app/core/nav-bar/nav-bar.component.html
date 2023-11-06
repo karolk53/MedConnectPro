@@ -1,0 +1,17 @@
+<nav class="navBar">
+    <div class="navBar--wrapper">
+        <a class="navbarLogo" routerLink="/">MedConnectPro</a>
+        <div class="navBar--content">
+
+            <ul class="navBar--link">
+                <app-nav-link [text]="'Home'" [route]="'/'"></app-nav-link>
+                <app-nav-link [text]="'Find doctor'" [route]="'/doctor'"></app-nav-link>
+            </ul>
+            <div class="navBar--buttons">
+                <button class="navBar--button navBar--button--register" routerLink="/account/register">Register</button>
+                <button class="navBar--button" routerLink="/account/login">Login</button>
+            </div>
+
+        </div>
+    </div>
+</nav>

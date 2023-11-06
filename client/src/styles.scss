@@ -1,0 +1,111 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import "./node_modules/bootstrap/scss/bootstrap";
+
+/* Importing Datepicker SCSS file. */
+@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
+
+//
+//  ROOT
+//
+:root {
+  --base-text-font-size: 16px;
+}
+
+//
+//  VARIABLES
+//
+
+// COLORS
+$primary-color: #3498db;
+$secondary-color: #338ba8;
+$dark-color: #296e85;
+$navbarBackground-color: #f8f9fa;
+$textBlack-color: #000000;
+$text-color: #000000;
+$color-white: #fff;
+
+// FONTS
+@mixin font-size($adjust: false) {
+  @if $adjust {
+    font-size: calc(var(--base-text-font-size) + $adjust);
+  } @else {
+    font-size: var(--base-text-font-size);
+  }
+}
+
+//
+// BREAKPOINTS
+//
+@mixin mobile {
+  @media (min-width: 0px) and (max-width: 640px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 641px) and (max-width: 999px) {
+    @content;
+  }
+}
+
+@mixin mobile-tablet {
+  @media (min-width: 0px) and (max-width: 999px) {
+    @content;
+  }
+}
+
+@mixin tablet-and-up {
+  @media (min-width: 641px) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media (min-width: 1000px) and (max-width: 1440px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 1441px) {
+    @content;
+  }
+}
+
+.hidden {
+  &--mobile {
+    @include mobile {
+      display: none !important;
+    }
+  }
+
+  &--tablet-and-up {
+    @include tablet {
+      display: none !important;
+    }
+
+    @include laptop {
+      display: none !important;
+    }
+
+    @include desktop {
+      display: none !important;
+    }
+  }
+
+  &--lap-and-up {
+    @include laptop {
+      display: none !important;
+    }
+
+    @include desktop {
+      display: none !important;
+    }
+  }
+}
+
+.xng-breadcrumb-trail {
+  font-weight: 700;
+}
