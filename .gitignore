@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+#custom
+client/.angular/cache/16.2.8/babel-webpack
+
 # User-specific files
 *.rsuser
 *.suo
