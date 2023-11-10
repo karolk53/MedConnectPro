@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231108200405_SpecialisationAndAddressEntity")]
+    partial class SpecialisationAndAddressEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
@@ -40,7 +43,7 @@ namespace API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("API.Entities.Doctor", b =>
@@ -78,7 +81,7 @@ namespace API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Doctors", (string)null);
+                    b.ToTable("Doctors");
                 });
 
             modelBuilder.Entity("API.Entities.DoctorSpecialisation", b =>
@@ -93,7 +96,7 @@ namespace API.Data.Migrations
 
                     b.HasIndex("SpecialisationId");
 
-                    b.ToTable("DoctorsSpecialisations", (string)null);
+                    b.ToTable("DoctorsSpecialisations");
                 });
 
             modelBuilder.Entity("API.Entities.Patient", b =>
@@ -136,7 +139,7 @@ namespace API.Data.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("Patients", (string)null);
+                    b.ToTable("Patients");
                 });
 
             modelBuilder.Entity("API.Entities.Specialisation", b =>
@@ -150,7 +153,7 @@ namespace API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Specialisations", (string)null);
+                    b.ToTable("Specialisations");
                 });
 
             modelBuilder.Entity("API.Entities.DoctorSpecialisation", b =>

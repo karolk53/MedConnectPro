@@ -27,7 +27,12 @@ namespace API.Data
                         .ToListAsync();
         }
 
-        public async Task<PatientProfileDto> GetPatientById(int id)
+        public async Task<Patient> GetPatientById(int id)
+        {
+            return await _context.Patients.Include(a => a.Address).SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<PatientProfileDto> GetPatientByIdAsync(int id)
         {
             return await _context.Patients
                         .Where(x => x.Id == id)
@@ -35,9 +40,9 @@ namespace API.Data
                         .SingleOrDefaultAsync();
         }
 
-        public Task<bool> SaveAllAsync()
+        public async Task<bool> SaveAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public void Update(Patient patient)

@@ -2,8 +2,7 @@
 
 public class Doctor : User
 {
-    public int Id { get; set; }
-
     public string PWZ { get; set; }
+    public List<DoctorSpecialisation> DoctorsSpecialisations  { get; set; }
 
 }

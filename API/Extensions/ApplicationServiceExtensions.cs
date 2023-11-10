@@ -23,6 +23,7 @@ namespace API.Extensions
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<ISpecialisationRepository, SpecialisationRepository>();
 
             return services;
         }
