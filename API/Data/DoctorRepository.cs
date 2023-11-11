@@ -34,7 +34,7 @@ namespace API.Data
 
         public async Task<Doctor> GetDoctorById(int id)
         {
-            return await _context.Doctors.FindAsync(id);
+            return await _context.Doctors.Include(p => p.Photo).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public Task<DoctorDto> GetDoctorByIdAsync(int id)

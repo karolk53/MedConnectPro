@@ -8,6 +8,5 @@ namespace API.Entities
         public string FlatNumber { get; set; }
         public string PostCode { get; set; }
         public string City { get; set; }
-
     }
 }

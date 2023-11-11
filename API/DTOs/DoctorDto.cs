@@ -1,4 +1,6 @@
 
+using API.Entities;
+
 namespace API.DTOs
 {
     public class DoctorDto
@@ -9,6 +11,8 @@ namespace API.DTOs
         public string Token { get; set; }
 
         public string PWZ {get; set;}
+
+        public string PhotoUrl { get; set; }
 
     }
 }

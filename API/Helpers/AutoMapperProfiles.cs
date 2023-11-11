@@ -14,13 +14,16 @@ namespace API.Helpers
             CreateMap<PatientUpdateDto, Patient>();
 
             CreateMap<Doctor, DoctorListDto>();
-            CreateMap<Doctor, DoctorDto>();
+            CreateMap<Doctor, DoctorDto>()
+                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photo.Url));
 
             CreateMap<AddressDto, Address>();
             CreateMap<Address, AddressDto>();
 
             CreateMap<SpecialisationDto, Specialisation>();
             CreateMap<SpecialisationDto, SpecialisationDto>();
+
+            CreateMap<Photo, PhotoDto>();
         }
     }
 }
