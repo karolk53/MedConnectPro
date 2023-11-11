@@ -38,6 +38,7 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.accountService.register(this.registerForm.value).subscribe({
         next: () => this.router.navigateByUrl(this.returnUrl),
+        error: () => this.registerForm.setErrors({ registerFailed: true }),
       });
     }
   }
