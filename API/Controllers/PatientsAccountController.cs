@@ -37,7 +37,8 @@ namespace API.Controllers
                 Email = registerDto.Email.ToLower(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
                 PasswordSalt = hmac.Key,
-                UserRole = "Patient"
+                UserRole = "Patient",
+                Address = new Address{}
             };
 
             _context.Patients.Add(patient);

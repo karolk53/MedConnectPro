@@ -1,6 +1,6 @@
 namespace API.DTOs
 {
-    public class PatientProfileDto
+    public class PatientUpdateDto
     {
         public string FirstName { get; set; }
 
@@ -8,8 +8,10 @@ namespace API.DTOs
 
         public string Phone { get; set; }
 
-        public string Email {get; set;}
+        public string Email {get; set;}   
 
-        public AddressDto Address { get; set; }
+        public string Gender { get; set; }    
+
+        public string PESEL {get; set;} 
     }
 }

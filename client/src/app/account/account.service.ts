@@ -44,7 +44,7 @@ export class AccountService {
       Password: values.password
     };
 
-    return this.http.post<User>(this.baseUrl + 'patientsaccount/login', loginData).pipe(
+    return this.http.post<User>(this.baseUrl + 'patients/account/login', loginData).pipe(
       map((user) => {
         localStorage.setItem('token', user.token);
         this.currentUserSource.next(user);
@@ -58,7 +58,7 @@ export class AccountService {
       Password: values.password
     };
 
-    return this.http.post<User>(this.baseUrl + 'patientsaccount/register', registerData).pipe(
+    return this.http.post<User>(this.baseUrl + 'patients/account/register', registerData).pipe(
       map((user) => {
         localStorage.setItem('token', user.token);
         this.currentUserSource.next(user);

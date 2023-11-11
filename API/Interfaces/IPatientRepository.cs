@@ -11,7 +11,9 @@ namespace API.Interfaces
 
         Task<IEnumerable<PatientProfileDto>> GetAllPatientsAsync();
 
-        Task<PatientProfileDto> GetPatientById(int id);
+        Task<PatientProfileDto> GetPatientByIdAsync(int id);
+
+        Task<Patient> GetPatientById(int id);
 
     }
 }

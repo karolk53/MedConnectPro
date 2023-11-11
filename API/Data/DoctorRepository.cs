@@ -1,4 +1,5 @@
 using API.DTOs;
+using API.Entities;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -18,12 +19,36 @@ namespace API.Data
             
         }
 
+        public async Task<Doctor> GetDoctorById(int id)
+        {
+            return await _context.Doctors.FindAsync(id);
+        }
+
+        public Task<DoctorDto> GetDoctorByIdAsync(int id)
+        {
+            return _context.Doctors
+                    .Where(x => x.Id == id)
+                    .ProjectTo<DoctorDto>(_mapper.ConfigurationProvider)
+                    .SingleOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<DoctorListDto>> GetDoctorsListAsync()
         {
             var doctors = await _context.Doctors
-                                        .ProjectTo<DoctorListDto>(_mapper.ConfigurationProvider)
+                                        .Include(s => s.DoctorsSpecialisations).ThenInclude(x => x.Specialisation)
                                         .ToListAsync();
-            return doctors;
+
+            return _mapper.Map<IEnumerable<DoctorListDto>>(doctors);
+        }
+
+        public Task<Doctor> GetDoctorWithSpecialisation(int id)
+        {
+            return _context.Doctors.Include(s => s.DoctorsSpecialisations).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<bool> SaveAllAsync()
+        {
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }
