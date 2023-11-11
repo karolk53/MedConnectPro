@@ -16,6 +16,7 @@ public class DataContext : DbContext
     public DbSet<Address> Addresses {get; set;}
     public DbSet<Specialisation> Specialisations { get; set; }
     public DbSet<DoctorSpecialisation> DoctorsSpecialisations  { get; set; }
+    public DbSet<Photo> Photos {get; set;}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,6 +33,12 @@ public class DataContext : DbContext
             .HasOne<Specialisation>(d => d.Specialisation)
             .WithMany(s => s.DoctorsSpecialisations)
             .HasForeignKey(d => d.SpecialisationId);
+
+        modelBuilder.Entity<Photo>()
+            .HasOne<Doctor>(d => d.Doctor)
+            .WithOne(x => x.Photo)
+            .HasForeignKey<Doctor>(f => f.PhotoId)
+            .OnDelete(DeleteBehavior.Cascade);
 
     }
 
