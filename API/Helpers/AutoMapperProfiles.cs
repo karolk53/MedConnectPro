@@ -6,7 +6,7 @@ namespace API.Helpers
 {
     public class AutoMapperProfiles : Profile
     {
-        
+
         public AutoMapperProfiles()
         {
             CreateMap<Patient, PatientDto>();
@@ -18,7 +18,7 @@ namespace API.Helpers
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photo.Url));
 
             CreateMap<AddressDto, Address>();
-            CreateMap<Address,AddressDto>();
+            CreateMap<Address, AddressDto>();
 
             CreateMap<SpecialisationDto, Specialisation>();
             CreateMap<SpecialisationDto, SpecialisationDto>();

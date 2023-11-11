@@ -13,11 +13,13 @@
 
 
         <div class="customform--actions">
-            <app-submit-button [disabled]="registerForm.invalid" [text]="'Register'"
-                (clickEvent)="onSubmit()"></app-submit-button>
+            <app-submit-button [disabled]="registerForm.invalid" [text]="'Register'"></app-submit-button>
             <a routerLink="/account/login">Login to your account</a>
-
+            <a routerLink="/account/register-doctor">Register as doctor</a>
         </div>
+        <div *ngIf="registerForm.hasError('registerFailed')" class="customform--error">Incorrect email or password.
+        </div>
+
 
     </form>
 

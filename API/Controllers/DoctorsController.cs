@@ -23,7 +23,7 @@ namespace API.Controllers
             this._specialisationRepository = specialisationRepository;
             this._mapper = mapper;
             this._repository = repository;
-            
+
         }
 
         [HttpGet]

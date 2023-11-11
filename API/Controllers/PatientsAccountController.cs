@@ -16,20 +16,20 @@ namespace API.Controllers
     {
         private readonly ITokenService _tokenService;
         private readonly DataContext _context;
-        
+
         public PatientsAccountController(DataContext context, ITokenService tokenService)
         {
             this._context = context;
             this._tokenService = tokenService;
-            
+
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<PatientDto>> Register(PatientRegisterDto registerDto)
         {
-            
-            if(await UserExists(registerDto.Email)) return BadRequest("User with that email already exists!");
-            
+
+            if (await UserExists(registerDto.Email)) return BadRequest("User with that email already exists!");
+
             using var hmac = new HMACSHA512();
 
             var patient = new Patient
@@ -38,18 +38,18 @@ namespace API.Controllers
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
                 PasswordSalt = hmac.Key,
                 UserRole = "Patient",
-                Address = new Address{}
+                Address = new Address { }
             };
 
             _context.Patients.Add(patient);
             await _context.SaveChangesAsync();
-        
+
             return new PatientDto
             {
                 Email = patient.Email,
                 Token = _tokenService.CreateToken(patient)
             };
-        
+
         }
 
         [HttpPost("login")]
@@ -63,9 +63,9 @@ namespace API.Controllers
 
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
 
-            for(int i=0; i<computedHash.Length; i++)
+            for (int i = 0; i < computedHash.Length; i++)
             {
-                if( computedHash[i] != patient.PasswordHash[i]) return Unauthorized("Invalid email or password!");
+                if (computedHash[i] != patient.PasswordHash[i]) return Unauthorized("Invalid email or password!");
             }
 
             return new PatientDto

@@ -21,7 +21,7 @@ public class PatientsController : BaseApiController
     }
 
 
-    [Authorize(Policy ="AdminOnly")]
+    [Authorize(Policy = "AdminOnly")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Patient>>> GetPatients()
     {
@@ -34,7 +34,7 @@ public class PatientsController : BaseApiController
     public async Task<ActionResult<PatientProfileDto>> GetPatient()
     {
         return await _patientRepository.GetPatientByIdAsync(User.GetUserId());
-    }   
+    }
 
     [Authorize(Policy = "PatientOnly")]
     [HttpPut("update")]
@@ -42,10 +42,10 @@ public class PatientsController : BaseApiController
     {
         var user = await _patientRepository.GetPatientById(User.GetUserId());
 
-        if(user == null) return NotFound();
+        if (user == null) return NotFound();
 
         _mapper.Map(updateDto, user);
-        if(await _patientRepository.SaveAllAsync()) return NoContent();
+        if (await _patientRepository.SaveAllAsync()) return NoContent();
 
         return BadRequest("Faild to update user!");
     }
@@ -57,15 +57,15 @@ public class PatientsController : BaseApiController
     {
         var user = await _patientRepository.GetPatientById(User.GetUserId());
 
-        if(user == null) return NotFound();
+        if (user == null) return NotFound();
 
         _mapper.Map(addressDto, user.Address);
-        if(await _patientRepository.SaveAllAsync()) return NoContent();
+        if (await _patientRepository.SaveAllAsync()) return NoContent();
 
         return BadRequest("Faild to update address!");
     }
 
-    
+
 
 
 }
