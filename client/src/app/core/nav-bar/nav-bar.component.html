@@ -8,8 +8,22 @@
                 <app-nav-link [text]="'Find doctor'" [route]="'/doctor'"></app-nav-link>
             </ul>
             <div class="navBar--buttons">
-                <button class="navBar--button navBar--button--register" routerLink="/account/register">Register</button>
-                <button class="navBar--button" routerLink="/account/login">Login</button>
+                <ng-container *ngIf="(accountService.currentUser$ | async) ===null">
+                    <button class="navBar--button navBar--button--register"
+                        routerLink="/account/register">Register</button>
+                    <button class="navBar--button" routerLink="/account/login">Login</button>
+                </ng-container>
+
+                <ng-container *ngIf="accountService.currentUser$ | async as user">
+                    <div class="navBar--settings">
+                        <span>{{user.email}} <i class="fa fa-solid fa-caret-down"></i></span>
+                        <ul>
+                            <li>User settings</li>
+                            <li (click)="accountService.logout()">Logout</li>
+                        </ul>
+                    </div>
+
+                </ng-container>
             </div>
 
         </div>
