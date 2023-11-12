@@ -11,6 +11,14 @@ const routes: Routes = [
     loadChildren: () =>
       import('./account/account.module').then((m) => m.AccountModule),
   },
+  {
+    path: 'profile',
+    loadChildren: () =>
+      import('./account-profile/account-profile.module').then(
+        (m) => m.AccountProfileModule
+      ),
+  },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
 @NgModule({
