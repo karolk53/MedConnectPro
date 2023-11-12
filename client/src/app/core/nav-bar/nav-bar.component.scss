@@ -110,6 +110,8 @@
     span {
       border: 2px solid $textBlack-color;
       padding: 4px 8px;
+      min-width: 120px;
+      text-align: center;
       cursor: pointer;
 
       &:hover {
@@ -120,7 +122,8 @@
     ul {
       display: none;
       position: absolute;
-      bottom: -68px;
+
+      transform: translateY(80%);
       list-style: none;
       width: 100%;
       background-color: $navbarBackground-color;
@@ -146,6 +149,13 @@
     &:hover ul {
       display: block;
     }
+  }
+
+  &--doctor {
+    color: $primary-color;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
   }
 }
 
