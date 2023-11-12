@@ -12,5 +12,5 @@ namespace API.Interfaces
         public Task<Doctor> GetDoctorWithSpecialisation(int id);
         public Task<bool> SaveAllAsync();
 
-    }
+        }
 }

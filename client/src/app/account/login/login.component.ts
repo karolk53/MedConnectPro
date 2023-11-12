@@ -26,6 +26,7 @@ export class LoginComponent {
     AccountService;
     this.accountService.login(this.loginForm.value).subscribe({
       next: () => this.router.navigateByUrl(this.returnUrl),
+      error: () => this.loginForm.setErrors({ loginFailed: true }),
     });
   }
 }
