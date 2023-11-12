@@ -1,5 +1,6 @@
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -28,17 +29,19 @@ namespace API.Data
         {
             return _context.Doctors
                     .Where(x => x.Id == id)
+                    .Include(s => s.DoctorsSpecialisations)
+                    .ThenInclude(z => z.Specialisation)
                     .ProjectTo<DoctorDto>(_mapper.ConfigurationProvider)
                     .SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<DoctorListDto>> GetDoctorsListAsync()
+        public async Task<PagedList<DoctorListDto>> GetDoctorsListAsync(DoctorParams doctorParams)
         {
-            var doctors = await _context.Doctors
-                                        .Include(s => s.DoctorsSpecialisations).ThenInclude(x => x.Specialisation)
-                                        .ToListAsync();
+            var query = _context.Doctors.AsQueryable();
 
-            return _mapper.Map<IEnumerable<DoctorListDto>>(doctors);
+            query = query.Where(x => x.DoctorsSpecialisations.Any(x => x.Specialisation.Name == doctorParams.Specialisation));
+
+            return await PagedList<DoctorListDto>.CreateAsync(query.AsNoTracking().ProjectTo<DoctorListDto>(_mapper.ConfigurationProvider), doctorParams.PageNumber, doctorParams.PageSize);
         }
 
         public Task<Doctor> GetDoctorWithSpecialisation(int id)

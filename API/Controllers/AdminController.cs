@@ -18,20 +18,5 @@ namespace API.Controllers
             
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CreateSpecialisation(SpecialisationDto specialisationDto)
-        {
-            var spec = new Specialisation 
-            {
-                Name = specialisationDto.Name
-            };
-            _specialisationRepository.AddSpecialisation(spec);
-
-            if( await _specialisationRepository.SaveAllAsync()) return Ok();
-
-            return BadRequest("Failed to create specialisation");
-
-        }
-
     }
 }

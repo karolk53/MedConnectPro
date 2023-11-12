@@ -1,6 +1,7 @@
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +17,12 @@ namespace API.Controllers
         private readonly IPhotoService _photoService;
         private readonly IPhotoRepository _photoRepository;
         
-        public DoctorsController(IDoctorRepository repository,IPhotoRepository photoRepository ,ISpecialisationRepository specialisationRepository,IPhotoService photoService ,IMapper mapper)
+        public DoctorsController(
+            IDoctorRepository repository,
+            IPhotoRepository photoRepository,
+            ISpecialisationRepository specialisationRepository,
+            IPhotoService photoService ,
+            IMapper mapper)
         {
             this._photoRepository = photoRepository;
             this._photoService = photoService;
@@ -27,18 +33,34 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DoctorListDto>>> GetDoctorsListAsync()
+        public async Task<ActionResult<PagedList<DoctorListDto>>> GetDoctorsListAsync([FromQuery]DoctorParams doctorParams)
         {
-            var doctors = await _repository.GetDoctorsListAsync();
+            var doctors = await _repository.GetDoctorsListAsync(doctorParams);
+            Response.AddPaginationHeader(new PaginationHeader(doctors.CurrentPage, doctors.TotalCount, doctors.PageSize, doctors.TotalPages));
             return Ok(doctors);
         }
 
-        [Authorize]
+
         [HttpGet("profile")]
         public async Task<ActionResult<DoctorDto>> GetDoctorProfile()
         {
             var doctor = await _repository.GetDoctorByIdAsync(User.GetUserId());
             return Ok(doctor);
+        }
+
+        [Authorize(Policy = "DoctorOnly")]
+        [HttpPut("update")]
+        public async Task<ActionResult> UpdateDoctorProfile(DoctorUpdateDto doctorUpdateDto)
+        {
+            var doctor = await _repository.GetDoctorById(User.GetUserId());
+
+            if(doctor == null) return NotFound();
+
+            _mapper.Map(doctorUpdateDto, doctor);
+            if( await _repository.SaveAllAsync()) return NoContent();
+
+            return BadRequest("Failed to update profile");
+
         }
 
         [Authorize(Policy = "DoctorOnly")]

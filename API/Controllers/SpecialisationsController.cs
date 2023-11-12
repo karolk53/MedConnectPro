@@ -18,6 +18,33 @@ namespace API.Controllers
             
         }
 
+        //[Authorize(Policy = "AdminOnly")]
+        [HttpPost]
+        public async Task<ActionResult> CreateSpecialisation(SpecialisationDto specialisationDto)
+        {
+            var spec = new Specialisation 
+            {
+                Name = specialisationDto.Name
+            };
+            _specialisationRepository.AddSpecialisation(spec);
+
+            if( await _specialisationRepository.SaveAllAsync()) return Ok();
+
+            return BadRequest("Failed to create specialisation");
+
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<SpecialisationDto>> GetSpecialisationsList()
+        {
+            return await _specialisationRepository.GetSpecialisationsAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IEnumerable<SpecialisationDto>> GetDoctorsSpecialisation(int id)
+        {
+            return await _specialisationRepository.GetDoctorsSpecialisations(id);
+        }
 
         [Authorize(Policy = "DoctorOnly")]
         [HttpPost("add/{id}")]
@@ -41,12 +68,5 @@ namespace API.Controllers
             return BadRequest("Failed to add specialisation");
 
         }  
-
-
-        [HttpGet("{id}")]
-        public async Task<IEnumerable<SpecialisationDto>> GetDoctorsSpecialisation(int id)
-        {
-            return await _specialisationRepository.GetDoctorsSpecialisations(id);
-        }
     }
 }
