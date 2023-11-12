@@ -22,19 +22,6 @@ namespace API.Data
 
         public async Task<Doctor> GetDoctorById(int id)
         {
-            return await _context.Doctors.FindAsync(id);
-        }
-
-        public Task<DoctorDto> GetDoctorByIdAsync(int id)
-        {
-            return _context.Doctors
-                    .Where(x => x.Id == id)
-                    .ProjectTo<DoctorDto>(_mapper.ConfigurationProvider)
-                    .SingleOrDefaultAsync();
-        }
-
-        public async Task<Doctor> GetDoctorById(int id)
-        {
             return await _context.Doctors.Include(p => p.Photo).FirstOrDefaultAsync(x => x.Id == id);
         }
 
