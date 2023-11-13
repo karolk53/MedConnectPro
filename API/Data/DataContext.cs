@@ -17,6 +17,7 @@ public class DataContext : DbContext
     public DbSet<Specialisation> Specialisations { get; set; }
     public DbSet<DoctorSpecialisation> DoctorsSpecialisations  { get; set; }
     public DbSet<Photo> Photos {get; set;}
+    public DbSet<Note> Notes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

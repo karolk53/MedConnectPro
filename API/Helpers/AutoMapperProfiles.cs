@@ -27,6 +27,9 @@ namespace API.Helpers
             CreateMap<Specialisation, SpecialisationDto>();
             
             CreateMap<Photo, PhotoDto>();
+
+            CreateMap<Note, NoteDto>();
+            CreateMap<NoteDto, Note>();
         }
     }
 }

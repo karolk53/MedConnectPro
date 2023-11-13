@@ -2,6 +2,7 @@
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -43,6 +44,8 @@ public class PatientsController : BaseApiController
         var user = await _patientRepository.GetPatientById(User.GetUserId());
 
         if (user == null) return NotFound();
+
+        if(!Validators.ValidatePesel(updateDto.PESEL)) return BadRequest("Invalid PESEl");
 
         _mapper.Map(updateDto, user);
         if (await _patientRepository.SaveAllAsync()) return NoContent();

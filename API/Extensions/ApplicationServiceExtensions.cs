@@ -28,6 +28,7 @@ namespace API.Extensions
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IPhotoRepository, PhotoRepository>();
+            services.AddScoped<INotesRepository, NotesRepository>();
 
             return services;
         }
