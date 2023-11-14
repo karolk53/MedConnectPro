@@ -29,6 +29,7 @@ namespace API.Extensions
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.AddScoped<INotesRepository, NotesRepository>();
+            services.AddScoped<IDoctorServiceRepository, DoctorServiceRepository>();
 
             return services;
         }

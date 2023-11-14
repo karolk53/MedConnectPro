@@ -8,5 +8,7 @@ namespace API.DTOs
         public string Email { get; set; }
         public string PhotoUrl { get; set; }
         public string Gender { get; set; }
+        public int NotesCount {get; set;}
+        public double TotalRating { get; set; }
     }
 }

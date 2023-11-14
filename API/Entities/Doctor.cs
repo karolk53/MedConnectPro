@@ -8,4 +8,5 @@ public class Doctor : User
     public Photo Photo { get; set; }
     public List<Note> Notes { get; set; }
     public double TotalRating { get; set; }
+    public List<DoctorService> DoctorServices { get; set; }
 }

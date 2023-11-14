@@ -16,7 +16,8 @@ namespace API.Helpers
             CreateMap<Doctor, DoctorListDto>()
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photo.Url));
             CreateMap<Doctor, DoctorDto>()
-                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photo.Url));
+                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photo.Url))
+                .ForMember(dest => dest.NotesCount, opt => opt.MapFrom(src => src.Notes.Count()));
             CreateMap<DoctorUpdateDto, Doctor>();
 
             CreateMap<AddressDto, Address>();
@@ -30,6 +31,8 @@ namespace API.Helpers
 
             CreateMap<Note, NoteDto>();
             CreateMap<NoteDto, Note>();
+
+            CreateMap<DoctorService, DoctorServiceDto>();
         }
     }
 }

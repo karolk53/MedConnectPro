@@ -16,17 +16,20 @@ namespace API.Controllers
         private readonly ISpecialisationRepository _specialisationRepository;
         private readonly IPhotoService _photoService;
         private readonly IPhotoRepository _photoRepository;
+        private readonly IDoctorServiceRepository _doctorServiceRepository;
         
         public DoctorsController(
             IDoctorRepository repository,
             IPhotoRepository photoRepository,
             ISpecialisationRepository specialisationRepository,
-            IPhotoService photoService ,
+            IPhotoService photoService,
+            IDoctorServiceRepository doctorServiceRepository,
             IMapper mapper)
         {
             this._photoRepository = photoRepository;
             this._photoService = photoService;
             this._specialisationRepository = specialisationRepository;
+            this._doctorServiceRepository = doctorServiceRepository;
             this._mapper = mapper;
             this._repository = repository;
 
@@ -41,11 +44,23 @@ namespace API.Controllers
         }
 
 
+        [Authorize(Policy = "DoctorOnly")]
         [HttpGet("profile")]
         public async Task<ActionResult<DoctorDto>> GetDoctorProfile()
         {
             var doctor = await _repository.GetDoctorByIdAsync(User.GetUserId());
             return Ok(doctor);
+        }
+
+        [HttpGet("{doctorId}")]
+        public async Task<ActionResult<DoctorDto>> GetDoctorProfileByPatient(int doctorId)
+        {
+            var doctor = await _repository.GetDoctorByIdAsync(doctorId);
+
+            if(doctor == null) return NotFound("Doctor not found");
+
+            return Ok(doctor);
+
         }
 
         [Authorize(Policy = "DoctorOnly")]
@@ -115,6 +130,51 @@ namespace API.Controllers
             if(await _repository.SaveAllAsync()) return Ok();
 
             return BadRequest("Failed to delete photo");
+
+        }
+
+        [Authorize(Policy = "DoctorOnly")]
+        [HttpPost("services")]
+        public async Task<ActionResult<DoctorServiceDto>> AddNewDoctorService(DoctorServiceDto serviceDto)
+        {
+            var doctor = await _repository.GetDoctorById(User.GetUserId());
+
+            if(doctor == null) return Unauthorized();
+
+            var service = new DoctorService
+            {
+                Name = serviceDto.Name,
+                Descripton = serviceDto.Descripton,
+                Price = serviceDto.Price,
+                Doctor = doctor
+            };
+
+            _doctorServiceRepository.CreateNewService(service);
+
+            if(await _repository.SaveAllAsync()) return Ok();
+
+            return BadRequest("Failed to add service");
+
+        }
+
+        [Authorize(Policy = "DoctorOnly")]
+        [HttpDelete("services/delete/{servId}")]
+        public async Task<ActionResult> DeleteDoctorService(int servId)
+        {
+            var doctor = await _repository.GetDoctorById(User.GetUserId());
+
+            if(doctor == null) return Unauthorized();
+
+            var service = await _doctorServiceRepository.GetDoctorService(servId);
+            if(service == null) return NotFound();
+            if(doctor.DoctorServices.Contains(service)) 
+            {
+                _doctorServiceRepository.DeleteService(service);
+                doctor.DoctorServices.Remove(service);
+                if( await _repository.SaveAllAsync()) return NoContent();
+            }
+
+            return BadRequest("Failed to delete service");
 
         }
     }

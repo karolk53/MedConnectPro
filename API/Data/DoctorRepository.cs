@@ -32,6 +32,7 @@ namespace API.Data
         {
             return _context.Doctors
                     .Where(x => x.Id == id)
+                    .Include(ds => ds.DoctorServices)
                     .Include(s => s.DoctorsSpecialisations)
                     .ThenInclude(z => z.Specialisation)
                     .ProjectTo<DoctorDto>(_mapper.ConfigurationProvider)
