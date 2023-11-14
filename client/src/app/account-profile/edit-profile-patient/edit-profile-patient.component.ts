@@ -11,6 +11,14 @@ import { User } from 'src/app/shared/models/user';
 })
 export class EditProfilePatientComponent implements OnInit {
   userData: User | null = null;
+  public isSumbitingData = false;
+  public isSumbitingDataSucces = false;
+  public isSumbitingDataError = false;
+
+  public isSumbitingAddressData = false;
+  public isSumbitingAddressDataSucces = false;
+  public isSumbitingAddressDataError = false;
+
 
   constructor(
     private accountService: AccountService,
@@ -45,7 +53,67 @@ export class EditProfilePatientComponent implements OnInit {
     city: new FormControl('', [Validators.required]),
   });
 
-  onSubmit() {
-    console.log('submit');
+  onSubmitPatientData() {
+    this.isSumbitingData = true;
+    this.isSumbitingDataError = false;
+    this.isSumbitingDataSucces = false;
+
+
+    let newData = {
+      "FirstName": this.patientDataForm.value.firstName,
+      "LastName": this.patientDataForm.value.lastName,
+      "Email": this.patientDataForm.value.email,
+      "Phone": this.patientDataForm.value.phone,
+      "PESEL": this.patientDataForm.value.pesel,
+      "Gender": this.patientDataForm.value.gender
+    }
+  
+    console.log('submit1', newData);
+  
+    this.accountService.updateProfile(newData)
+      .subscribe(
+        () => {
+          console.log('Profile updated successfully!');
+          this.isSumbitingData = false;
+          this.isSumbitingDataSucces = true;
+        },
+        (error) => {
+          console.error('Error updating profile:', error);
+          this.isSumbitingData = false;
+          this.isSumbitingDataError = true;
+        }
+      );
   }
+
+  async onSubmitPatientAddres() {
+    this.isSumbitingAddressData = true;
+    this.isSumbitingAddressDataError = false;
+    this.isSumbitingAddressDataSucces = false;
+
+
+    let newAddress = {
+      "Street": this.patientAddressForm.value.street,
+      "BuildingNumber": this.patientAddressForm.value.buildingNumber,
+      "FlatNumber": this.patientAddressForm.value.flatNumber,
+      "PostCode": this.patientAddressForm.value.postCode,
+      "City": this.patientAddressForm.value.city
+    }
+  
+    console.log('submit2', newAddress);
+  
+    this.accountService.updateAddres(newAddress)
+      .subscribe(
+        () => {
+          console.log('Addres updated successfully!');
+          this.isSumbitingAddressData = false;
+          this.isSumbitingAddressDataSucces = true;
+        },
+        (error) => {
+          console.error('Error updating addres:', error);
+          this.isSumbitingAddressData = false;
+          this.isSumbitingAddressDataError = true;
+        }
+      );
+  }
+
 }

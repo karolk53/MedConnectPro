@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Observable, ReplaySubject } from 'rxjs';
+import { catchError, map, Observable, ReplaySubject, switchMap } from 'rxjs';
 //import { environment } from 'src/environments/environment';
 import { User } from '../shared/models/user';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -164,6 +164,69 @@ export class AccountService {
     });
   }
 
+  updateProfile(profileData: any): Observable<void> {
+    return this.currentUser$.pipe(
+      switchMap(user => {
+        if (user && user.token) {
+          console.log('user.token', user.token)
+          const headers = new HttpHeaders({
+            Authorization: `Bearer ${user.token}`,
+          });
+
+          return this.http.put<void>("https://localhost:5001/api/patients/update", profileData, { headers });
+        } else {
+          throw new Error('User not authenticated.');
+        }
+      }),
+      catchError(error => {
+        console.error('Error updating profile:', error);
+        throw error;
+      })
+    );
+  }
+
+  updateAddres(newAddress: any): Observable<void> {
+    return this.currentUser$.pipe(
+      switchMap(user => {
+        if (user && user.token) {
+          console.log('user.token', user.token)
+          const headers = new HttpHeaders({
+            Authorization: `Bearer ${user.token}`,
+          });
+
+          return this.http.put<void>("https://localhost:5001/api/patients/address/update", newAddress, { headers });
+        } else {
+          throw new Error('User not authenticated.');
+        }
+      }),
+      catchError(error => {
+        console.error('Error updating profile:', error);
+        throw error;
+      })
+    );
+  }
+
+  updateDoctorData(newData: any): Observable<void> {
+    return this.currentUser$.pipe(
+      switchMap(user => {
+        if (user && user.token) {
+          console.log('user.token', user.token)
+          const headers = new HttpHeaders({
+            Authorization: `Bearer ${user.token}`,
+          });
+
+          return this.http.put<void>("https://localhost:5001/api/doctors/update", newData, { headers });
+        } else {
+          throw new Error('User not authenticated.');
+        }
+      }),
+      catchError(error => {
+        console.error('Error updating profile:', error);
+        throw error;
+      })
+    );
+  }
+  
   logout() {
     localStorage.removeItem('token');
     this.currentUserSource.next(null);

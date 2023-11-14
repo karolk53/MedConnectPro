@@ -8,6 +8,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class SubmitButtonComponent {
   @Input() disabled: boolean = false;
   @Input() text: string = 'Submit';
+  @Input() isLoading: boolean = false;
 
   @Output() clickEvent = new EventEmitter<void>();
 

@@ -11,6 +11,9 @@ import { User } from 'src/app/shared/models/user';
 })
 export class EditProfileDoctorComponent {
   userData: User | null = null;
+  public isSumbitingData = false;
+  public isSumbitingDataError = false;
+  public isSumbitingDataSucces = false;
 
   constructor(
     private accountService: AccountService,
@@ -37,7 +40,35 @@ export class EditProfileDoctorComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
-  onSubmit() {
-    console.log('submit');
+  onSubmitData() {
+    this.isSumbitingData = true;
+    this.isSumbitingDataError = false;
+    this.isSumbitingDataSucces = false;
+
+
+    let newData = {
+      "FirstName": this.doctorDataForm.value.firstName,
+      "LastName": this.doctorDataForm.value.lastName,
+      "Email": this.doctorDataForm.value.email,
+      "Phone": this.doctorDataForm.value.phone,
+      "PESEL": this.doctorDataForm.value.pesel,
+      "Gender": this.doctorDataForm.value.gender
+    }
+  
+    console.log('submit1', newData);
+  
+    this.accountService.updateProfile(newData)
+      .subscribe(
+        () => {
+          console.log('Profile updated successfully!');
+          this.isSumbitingData = false;
+          this.isSumbitingDataSucces = true;
+        },
+        (error) => {
+          console.error('Error updating profile:', error);
+          this.isSumbitingData = false;
+          this.isSumbitingDataError = true;
+        }
+      );
   }
 }
