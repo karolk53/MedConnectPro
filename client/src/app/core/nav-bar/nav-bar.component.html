@@ -15,10 +15,21 @@
                 </ng-container>
 
                 <ng-container *ngIf="accountService.currentUser$ | async as user">
+                    <ng-container *ngIf="user.role === 'Doctor'"><span
+                            class="navBar--doctor">Doctor:</span></ng-container>
                     <div class="navBar--settings">
                         <span>{{user.email}} <i class="fa fa-solid fa-caret-down"></i></span>
                         <ul>
-                            <li>User settings</li>
+                            <!-- Patient -->
+                            <li routerLink="/profile/profile-patient" *ngIf="user.role === 'Patient'">Patient
+                                profile</li>
+                            <li routerLink="/profile/edit-patient-profile" *ngIf="user.role === 'Patient'">Edit Data
+                            </li>
+                            <!-- Doctor -->
+                            <li routerLink="/profile/profile-doctor" *ngIf="user.role === 'Doctor'">Doctor
+                                profile</li>
+                            <li routerLink="/profile/edit-profile-doctor" *ngIf="user.role === 'Doctor'">Edit Data
+                            </li>
                             <li (click)="accountService.logout()">Logout</li>
                         </ul>
                     </div>

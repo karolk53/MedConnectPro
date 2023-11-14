@@ -1,1 +1,28 @@
-<p>register-doctor works!</p>
+<div class="customform--wrapper">
+    <form [formGroup]="registerDoctorForm" (ngSubmit)="onSubmit()">
+        <div class="customform--header">
+            <h1 class="mb-3">Register as Doctor</h1>
+        </div>
+
+
+        <app-text-input [formControl]="registerDoctorForm.controls['email']" [label]="'Emai Address'"></app-text-input>
+        <app-text-input [formControl]="registerDoctorForm.controls['password']" [type]="'password'"
+            [label]="'Password'"></app-text-input>
+        <app-text-input [formControl]="registerDoctorForm.controls['confirmPassword']" [type]="'password'"
+            [label]="'Confirm Password'"></app-text-input>
+        <app-text-input [formControl]="registerDoctorForm.controls['pwz']" [label]="'PWZ'"></app-text-input>
+
+
+        <div class="customform--actions">
+            <app-submit-button [disabled]="registerDoctorForm.invalid" [text]="'Register'"></app-submit-button>
+            <a routerLink="/account/login">Login to your account</a>
+            <a routerLink="/account/register">Register as patient</a>
+        </div>
+        <div *ngIf="registerDoctorForm.hasError('registerFailed')" class="customform--error">Incorrect email or
+            password.
+        </div>
+
+
+    </form>
+
+</div>

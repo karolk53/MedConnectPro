@@ -29,7 +29,10 @@ namespace API.Data
 
         public async Task<Patient> GetPatientById(int id)
         {
-            return await _context.Patients.Include(a => a.Address).SingleOrDefaultAsync(x => x.Id == id);
+            return await _context.Patients
+                            .Include(a => a.Address)
+                            .Include(n => n.Notes)
+                            .SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<PatientProfileDto> GetPatientByIdAsync(int id)

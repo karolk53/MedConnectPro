@@ -49,6 +49,13 @@ namespace API.Data
             return await _context.Specialisations.FindAsync(id);
         }
 
+        public async Task<IEnumerable<SpecialisationDto>> GetSpecialisationsAsync()
+        {
+            return await _context.Specialisations
+                .ProjectTo<SpecialisationDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
         public async Task<bool> SaveAllAsync()
         {
             return await _context.SaveChangesAsync() > 0;

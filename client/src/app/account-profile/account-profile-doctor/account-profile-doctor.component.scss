@@ -1,0 +1,97 @@
+@import "../../../styles.scss";
+
+.profile {
+  &--wrapper {
+    background-color: $navbarBackground-color;
+    max-width: 800px;
+    margin-top: 80px;
+    padding: 40px 20px;
+    margin-inline: auto;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 6px solid $primary-color;
+      top: 15px;
+      left: 15px;
+      background: transparent;
+
+      z-index: -1;
+      opacity: 0.6;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 6px solid $primary-color;
+      top: -15px;
+      left: -15px;
+      background: transparent;
+
+      z-index: -1;
+      opacity: 0.4;
+    }
+
+    span {
+      color: $primary-color;
+      width: auto;
+      position: relative;
+      @include font-size(+16px);
+      font-weight: 600;
+      z-index: 1;
+      background-color: $navbarBackground-color-dark;
+      padding: 5px 10px;
+
+      &::after {
+        position: absolute;
+        content: "";
+        right: 0px;
+        width: 20px;
+        height: 20px;
+        bottom: 0px;
+        border-bottom: 4px solid $primary-color;
+        border-right: 4px solid $primary-color;
+        opacity: 0.4;
+      }
+
+      &::before {
+        position: absolute;
+        content: "";
+        left: 0px;
+        width: 20px;
+        height: 20px;
+        top: 0px;
+        border-top: 4px solid $primary-color;
+        border-left: 4px solid $primary-color;
+      }
+    }
+  }
+
+  &--data {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 20px auto;
+    @include font-size(+5px);
+
+    &--item {
+      b {
+        color: $primary-color;
+        font-weight: 600;
+      }
+    }
+  }
+  &--image {
+    margin: 20px 0;
+
+    img {
+      width: 225px;
+      object-fit: scale-down;
+    }
+  }
+}

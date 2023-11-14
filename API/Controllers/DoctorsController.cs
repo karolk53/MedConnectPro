@@ -1,6 +1,7 @@
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -15,30 +16,66 @@ namespace API.Controllers
         private readonly ISpecialisationRepository _specialisationRepository;
         private readonly IPhotoService _photoService;
         private readonly IPhotoRepository _photoRepository;
+        private readonly IDoctorServiceRepository _doctorServiceRepository;
         
-        public DoctorsController(IDoctorRepository repository,IPhotoRepository photoRepository ,ISpecialisationRepository specialisationRepository,IPhotoService photoService ,IMapper mapper)
+        public DoctorsController(
+            IDoctorRepository repository,
+            IPhotoRepository photoRepository,
+            ISpecialisationRepository specialisationRepository,
+            IPhotoService photoService,
+            IDoctorServiceRepository doctorServiceRepository,
+            IMapper mapper)
         {
             this._photoRepository = photoRepository;
             this._photoService = photoService;
             this._specialisationRepository = specialisationRepository;
+            this._doctorServiceRepository = doctorServiceRepository;
             this._mapper = mapper;
             this._repository = repository;
 
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DoctorListDto>>> GetDoctorsListAsync()
+        public async Task<ActionResult<PagedList<DoctorListDto>>> GetDoctorsListAsync([FromQuery]DoctorParams doctorParams)
         {
-            var doctors = await _repository.GetDoctorsListAsync();
+            var doctors = await _repository.GetDoctorsListAsync(doctorParams);
+            Response.AddPaginationHeader(new PaginationHeader(doctors.CurrentPage, doctors.TotalCount, doctors.PageSize, doctors.TotalPages));
             return Ok(doctors);
         }
 
-        [Authorize]
+
+        [Authorize(Policy = "DoctorOnly")]
         [HttpGet("profile")]
         public async Task<ActionResult<DoctorDto>> GetDoctorProfile()
         {
             var doctor = await _repository.GetDoctorByIdAsync(User.GetUserId());
             return Ok(doctor);
+        }
+
+        [HttpGet("{doctorId}")]
+        public async Task<ActionResult<DoctorDto>> GetDoctorProfileByPatient(int doctorId)
+        {
+            var doctor = await _repository.GetDoctorByIdAsync(doctorId);
+
+            if(doctor == null) return NotFound("Doctor not found");
+
+            return Ok(doctor);
+
+        }
+
+        [Authorize(Policy = "DoctorOnly")]
+        [HttpPut("update")]
+        public async Task<ActionResult> UpdateDoctorProfile(DoctorUpdateDto doctorUpdateDto)
+        {
+            var doctor = await _repository.GetDoctorById(User.GetUserId());
+
+            if(doctor == null) return NotFound();
+
+            _mapper.Map(doctorUpdateDto, doctor);
+            if( await _repository.SaveAllAsync()) return NoContent();
+
+            return BadRequest("Failed to update profile");
+
         }
 
         [Authorize(Policy = "DoctorOnly")]
@@ -93,6 +130,51 @@ namespace API.Controllers
             if(await _repository.SaveAllAsync()) return Ok();
 
             return BadRequest("Failed to delete photo");
+
+        }
+
+        [Authorize(Policy = "DoctorOnly")]
+        [HttpPost("services")]
+        public async Task<ActionResult<DoctorServiceDto>> AddNewDoctorService(DoctorServiceDto serviceDto)
+        {
+            var doctor = await _repository.GetDoctorById(User.GetUserId());
+
+            if(doctor == null) return Unauthorized();
+
+            var service = new DoctorService
+            {
+                Name = serviceDto.Name,
+                Descripton = serviceDto.Descripton,
+                Price = serviceDto.Price,
+                Doctor = doctor
+            };
+
+            _doctorServiceRepository.CreateNewService(service);
+
+            if(await _repository.SaveAllAsync()) return Ok();
+
+            return BadRequest("Failed to add service");
+
+        }
+
+        [Authorize(Policy = "DoctorOnly")]
+        [HttpDelete("services/delete/{servId}")]
+        public async Task<ActionResult> DeleteDoctorService(int servId)
+        {
+            var doctor = await _repository.GetDoctorById(User.GetUserId());
+
+            if(doctor == null) return Unauthorized();
+
+            var service = await _doctorServiceRepository.GetDoctorService(servId);
+            if(service == null) return NotFound();
+            if(doctor.DoctorServices.Contains(service)) 
+            {
+                _doctorServiceRepository.DeleteService(service);
+                doctor.DoctorServices.Remove(service);
+                if( await _repository.SaveAllAsync()) return NoContent();
+            }
+
+            return BadRequest("Failed to delete service");
 
         }
     }

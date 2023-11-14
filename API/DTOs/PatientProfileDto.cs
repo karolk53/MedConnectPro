@@ -10,6 +10,10 @@ namespace API.DTOs
 
         public string Email {get; set;}
 
+        public string PESEL {get; set;}
+
+        public DateOnly DateOfBirth { get; set; }
+
         public AddressDto Address { get; set; }
     }
 }

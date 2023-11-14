@@ -1,5 +1,6 @@
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -21,37 +22,30 @@ namespace API.Data
 
         public async Task<Doctor> GetDoctorById(int id)
         {
-            return await _context.Doctors.FindAsync(id);
+            return await _context.Doctors
+                            .Include(p => p.Photo)
+                            .Include(n => n.Notes)
+                            .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public Task<DoctorDto> GetDoctorByIdAsync(int id)
         {
             return _context.Doctors
                     .Where(x => x.Id == id)
+                    .Include(ds => ds.DoctorServices)
+                    .Include(s => s.DoctorsSpecialisations)
+                    .ThenInclude(z => z.Specialisation)
                     .ProjectTo<DoctorDto>(_mapper.ConfigurationProvider)
                     .SingleOrDefaultAsync();
         }
 
-        public async Task<Doctor> GetDoctorById(int id)
+        public async Task<PagedList<DoctorListDto>> GetDoctorsListAsync(DoctorParams doctorParams)
         {
-            return await _context.Doctors.Include(p => p.Photo).FirstOrDefaultAsync(x => x.Id == id);
-        }
+            var query = _context.Doctors.AsQueryable();
 
-        public Task<DoctorDto> GetDoctorByIdAsync(int id)
-        {
-            return _context.Doctors
-                    .Where(x => x.Id == id)
-                    .ProjectTo<DoctorDto>(_mapper.ConfigurationProvider)
-                    .SingleOrDefaultAsync();
-        }
+            query = query.Where(x => x.DoctorsSpecialisations.Any(x => x.Specialisation.Name == doctorParams.Specialisation));
 
-        public async Task<IEnumerable<DoctorListDto>> GetDoctorsListAsync()
-        {
-            var doctors = await _context.Doctors
-                                        .Include(s => s.DoctorsSpecialisations).ThenInclude(x => x.Specialisation)
-                                        .ToListAsync();
-
-            return _mapper.Map<IEnumerable<DoctorListDto>>(doctors);
+            return await PagedList<DoctorListDto>.CreateAsync(query.AsNoTracking().ProjectTo<DoctorListDto>(_mapper.ConfigurationProvider), doctorParams.PageNumber, doctorParams.PageSize);
         }
 
         public Task<Doctor> GetDoctorWithSpecialisation(int id)

@@ -10,7 +10,7 @@ import { passwordMatchValidator } from '../password-validators';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
-  returnUrl = '';
+  returnUrl = '/profile/edit-patient-profile';
   complexPassword =
     '^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$!%^&+=])(?!.*\\s).{8,}$';
 

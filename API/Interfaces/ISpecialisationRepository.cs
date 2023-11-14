@@ -10,6 +10,6 @@ namespace API.Interfaces
         Task<Specialisation> GetSpecialisationById(int id);
         Task<bool> SaveAllAsync();
         Task<IEnumerable<SpecialisationDto>> GetDoctorsSpecialisations(int doctorId);
-
+        Task<IEnumerable<SpecialisationDto>> GetSpecialisationsAsync();
     }
 }
