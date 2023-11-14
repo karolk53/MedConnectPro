@@ -1,0 +1,37 @@
+<div class="profile--wrapper">
+
+
+    <span>Doctor Data</span>
+    <div class="profile--data">
+        <div class="profile--data--item">
+            Id: <b>{{data?.id === null ? "-" : data?.id}}</b>
+        </div>
+        <div class="profile--data--item">
+            Email: <b>{{data?.email === null ? "-" : data?.email}}</b>
+        </div>
+        <div class="profile--data--item">
+            First name: <b>{{data?.firstName === null ? "-" : data?.firstName}}</b>
+        </div>
+        <div class="profile--data--item">
+            Last Name: <b>{{data?.lastName === null ? "-" : data?.lastName}}</b>
+        </div>
+        <div class="profile--data--item">
+            Gender: <b>{{data?.gender === null ? "-" : data?.gender}}</b>
+        </div>
+        <div class="profile--data--item">
+            Notes Count: <b>{{data?.notesCount === null ? "-" : data?.notesCount}}</b>
+        </div>
+        <div class="profile--data--item">
+            Total rating: <b>{{data?.totalRating === null ? "-" : data?.totalRating}}</b>
+        </div>
+
+
+    </div>
+    <span>Doctor photo:</span>
+    <div class="profile--image">
+        <img [src]="data?.photoUrl || 'https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png'"
+            alt="User Photo">
+    </div>
+
+
+</div>

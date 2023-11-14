@@ -1,0 +1,39 @@
+<div class=" customform--wrapper">
+    <!-- DATA FORM -->
+    <form [formGroup]="doctorDataForm" (ngSubmit)="onSubmitData()">
+        <div class="customform--header">
+            <h1 class="mb-3">Patient Data</h1>
+        </div>
+        <app-text-input [formControl]="doctorDataForm.controls['firstName']" [label]="'First Name'"></app-text-input>
+        <app-text-input [formControl]="doctorDataForm.controls['lastName']" [label]="'Last Name'"></app-text-input>
+        <app-text-input [formControl]="doctorDataForm.controls['phone']" [type]="'tel'"
+            [label]="'Phone number'"></app-text-input>
+        <app-text-input [formControl]="doctorDataForm.controls['gender']" [label]="'Gender'"></app-text-input>
+        <app-text-input [formControl]="doctorDataForm.controls['email']" [label]="'Emai Address'"
+            [value]="'test'"></app-text-input>
+
+        <div class="customform--actions">
+            <app-submit-button [disabled]="doctorDataForm.invalid" [text]="'Edit'"
+                [isLoading]="isSumbitingData"></app-submit-button>
+            <a routerLink="/profile/profile-patient">Show patient data.</a>
+        </div>
+        <div *ngIf="doctorDataForm.hasError('loginFailed')" class="customform--error">Incorrect email or password.
+        </div>
+    </form>
+
+    <div class="customform--space"></div>
+
+    <form [formGroup]="doctorPhotoForm" (ngSubmit)="onSubmitPhoto()">
+        <div class="customform--header">
+            <h1 class="mb-3">Edit Profile Picture</h1>
+            <app-text-input [formControl]="doctorPhotoForm.controls['profilePicture']" [label]="'Picture'" type="file"
+                (fileInputChanged)="handleFileInput($event)"></app-text-input>
+        </div>
+        <div class="customform--actions mt-3">
+            <app-submit-button [disabled]="doctorPhotoForm.invalid" [text]="'Edit'"
+                [isLoading]="isSumbitingPhoto"></app-submit-button>
+        </div>
+    </form>
+
+
+</div>

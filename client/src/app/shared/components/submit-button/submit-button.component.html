@@ -1,3 +1,7 @@
-<button [disabled]="disabled" (click)="handleClick()" class="styledButton" type="submit">
-    {{ text }}
-</button>
+<button [disabled]="disabled || isLoading" (click)="handleClick()" class="styledButton" type="submit">
+    <ng-container *ngIf="isLoading; else notLoading">
+      <i class="fa fa-solid fa-spinner fa-spin"></i>
+    </ng-container>
+    <ng-template #notLoading>{{ text }}</ng-template>
+  </button>
+  

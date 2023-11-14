@@ -43,11 +43,13 @@ namespace API.Data
         {
             var query = _context.Doctors.AsQueryable();
 
-            if(!string.IsNullOrEmpty(doctorParams.Specialisation)){
+            if (!string.IsNullOrEmpty(doctorParams.Specialisation))
+            {
                 query = query.Where(x => x.DoctorsSpecialisations.Any(x => x.Specialisation.Name == doctorParams.Specialisation));
             }
 
-            if(!string.IsNullOrEmpty(doctorParams.SortByTotalRating)){
+            if (!string.IsNullOrEmpty(doctorParams.SortByTotalRating))
+            {
                 query = doctorParams.SortByTotalRating switch
                 {
                     "Asc" => query.OrderBy(x => x.TotalRating),
