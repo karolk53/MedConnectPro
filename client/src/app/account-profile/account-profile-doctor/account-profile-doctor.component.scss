@@ -86,4 +86,12 @@
       }
     }
   }
+  &--image {
+    margin: 20px 0;
+
+    img {
+      width: 225px;
+      object-fit: scale-down;
+    }
+  }
 }

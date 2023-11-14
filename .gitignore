@@ -5,6 +5,10 @@
 
 #custom
 client/.angular/cache/16.2.8/babel-webpack
+Api/appsettings.Development.json
+Api/projectdb.db
+Api/projectdb.db-shm
+projectdb.db-wal
 
 # User-specific files
 *.rsuser

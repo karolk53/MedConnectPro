@@ -1,4 +1,4 @@
-import { Component, Input, Self } from '@angular/core';
+import { Component, EventEmitter, Input, Output, Self } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 
 @Component({
@@ -10,6 +10,12 @@ export class TextInputComponent implements ControlValueAccessor {
   @Input() type = 'text';
   @Input() label = '';
   @Input() value = '';
+  @Output() fileInputChanged: EventEmitter<FileList> =
+    new EventEmitter<FileList>();
+
+  onFileInputChange(event: any): void {
+    this.fileInputChanged.emit(event.target.files);
+  }
 
   constructor(@Self() public controlDir: NgControl) {
     this.controlDir.valueAccessor = this;

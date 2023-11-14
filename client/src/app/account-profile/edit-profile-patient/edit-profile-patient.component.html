@@ -1,6 +1,6 @@
 <div class=" customform--wrapper">
     <!-- DATA FORM -->
-    <form [formGroup]="patientDataForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="patientDataForm" (ngSubmit)="onSubmitPatientData()">
         <div class="customform--header">
             <h1 class="mb-3">Patient Data</h1>
         </div>
@@ -14,17 +14,17 @@
             [value]="'test'"></app-text-input>
 
         <div class="customform--actions">
-            <app-submit-button [disabled]="patientDataForm.invalid" [text]="'Edit'"></app-submit-button>
+            <app-submit-button [disabled]="patientDataForm.invalid" [isLoading]="isSumbitingData" [text]="'Edit'"></app-submit-button>
             <a routerLink="/profile/profile-patient">Show patient data.</a>
         </div>
-        <div *ngIf="patientDataForm.hasError('loginFailed')" class="customform--error">Incorrect email or password.
-        </div>
+        <div *ngIf="isSumbitingDataError" class="customform--error">Incorrect data.</div>
+        <div *ngIf="isSumbitingDataSucces" class="customform--succes">Data updated!</div>
     </form>
 
     <div class="customform--space"></div>
 
     <!-- ADDRESS FORM -->
-    <form [formGroup]="patientAddressForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="patientAddressForm" (ngSubmit)="onSubmitPatientAddres()">
         <div class="customform--header">
             <h1 class="mb-3">Address</h1>
         </div>
@@ -42,10 +42,10 @@
 
 
         <div class="customform--actions">
-            <app-submit-button [disabled]="patientDataForm.invalid" [text]="'Edit'"></app-submit-button>
+            <app-submit-button [disabled]="patientAddressForm.invalid" [text]="'Edit'" [isLoading]="isSumbitingAddressData"></app-submit-button>
             <a routerLink="/profile/profile-patient">Show patient data.</a>
         </div>
-        <div *ngIf="patientDataForm.hasError('loginFailed')" class="customform--error">Incorrect email or password.
-        </div>
+        <div *ngIf="isSumbitingAddressDataError" class="customform--error">Incorrect data.</div>
+        <div *ngIf="isSumbitingAddressDataSucces" class="customform--succes">Addres changed!</div>
     </form>
 </div>
