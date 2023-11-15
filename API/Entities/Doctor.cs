@@ -9,4 +9,6 @@ public class Doctor : User
     public List<Note> Notes { get; set; }
     public double TotalRating { get; set; }
     public List<DoctorService> DoctorServices { get; set; }
+    public int? OfficeId { get; set; }
+    public Office Office { get; set; }
 }
