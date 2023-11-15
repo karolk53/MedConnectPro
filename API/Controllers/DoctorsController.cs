@@ -83,15 +83,14 @@ namespace API.Controllers
         public async Task<ActionResult<PhotoDto>> AddDoctorPhoto(IFormFile file)
         {
             var doctor = await _repository.GetDoctorById(User.GetUserId());
-
             if(doctor == null) return NotFound();
-            if(doctor.Photo != null)
-            {
-                await _photoService.DeletePhotoAsync(doctor.Photo.PublicId);
-                _photoRepository.DeletePhoto(doctor.Photo);
-            }
 
-            var result =  await _photoService.AddPhotoAsync(file);
+            if(doctor.Photo != null){
+                var r = await _photoService.DeletePhotoAsync(doctor.Photo.PublicId);
+                if(r.Error != null) return BadRequest(r.Error.Message);
+            }  
+
+            var result = await _photoService.AddPhotoAsync(file);
             if(result.Error != null) return BadRequest(result.Error.Message);
 
             var photo = new Photo 
