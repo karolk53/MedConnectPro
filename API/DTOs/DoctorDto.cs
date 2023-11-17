@@ -15,5 +15,6 @@ namespace API.DTOs
         public double TotalRating { get; set; }
         public List<SpecialisationDto> Specialisations { get; set; } = new ();
         public List<DoctorServiceDto> DoctorServices { get; set; }
+        public OfficeDto Office { get; set; }
     }
 }
