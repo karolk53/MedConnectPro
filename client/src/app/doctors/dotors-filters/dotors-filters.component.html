@@ -1,0 +1,23 @@
+<div class="filters--wrapper" [formGroup]="filtersForm">
+    <div class="filters--content">
+        <div class="filters--box">
+            <div class="filters--item filters--item--spec">
+                <label>Specialization:</label>
+                <select class="form-select" formControlName="specialization" aria-label="Default select example">
+                    <option value="All">All</option>
+                    <option value="1">Spec1</option>
+                    <option value="2">Spec2</option>
+                    <option value="3">Spec3</option>
+                </select>
+            </div>
+            <div class="filters--item">
+                <label>Name:</label>
+                <input formControlName="name" class="form-control" type="text">
+            </div>
+            <div class="filters--item">
+                <app-submit-button [disabled]="filtersForm.invalid" [text]="'Search'" (click)="onSubmit()"
+                    [isLoading]="(doctorService.isLoading$ | async) ?? false" [isBig]="true"></app-submit-button>
+            </div>
+        </div>
+    </div>
+</div>

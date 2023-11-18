@@ -1,7 +1,7 @@
 @import "../../../styles.scss";
 
 .header {
-  background-color: #3498dbd3;
+  background-color: $header-color;
 
   &--content {
     max-width: 1440px;

@@ -15,6 +15,11 @@
   overflow: hidden;
   z-index: 1;
 
+  &--big {
+    padding: 10px 14px;
+    @include font-size(+3px);
+  }
+
   &:after {
     content: "";
     position: absolute;
