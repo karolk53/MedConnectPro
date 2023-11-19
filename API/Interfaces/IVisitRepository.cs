@@ -1,5 +1,6 @@
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 
 namespace API.Interfaces
 {
@@ -7,7 +8,7 @@ namespace API.Interfaces
     {
         void AddNewVisit(Visit visit);
         Task<Visit> GetVisitById(int visitId);
-        Task<IEnumerable<VisitDto>> GetPatientVisitsList(int patientId);
+        Task<PagedList<VisitDto>> GetPatientVisitsListAsync(int patientId, VisitParams visitParams);
         Task<IEnumerable<VisitDto>> GetDoctorVisitsList(int doctorId);
         Task<bool> SaveAllAsync();
     }

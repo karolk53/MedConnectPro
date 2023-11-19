@@ -72,10 +72,10 @@ public class PatientsController : BaseApiController
 
     [Authorize(Policy = "PatientOnly")]
     [HttpGet("visits")]
-    public async Task<ActionResult<IEnumerable<Visit>>> GetPatientsVisitsList()
+    public async Task<ActionResult<IEnumerable<Visit>>> GetPatientsVisitsList([FromQuery]VisitParams visitParams)
     {
         var patientId = User.GetUserId();
-        var visits = await _visitRepository.GetPatientVisitsList(patientId);
+        var visits = await _visitRepository.GetPatientVisitsListAsync(patientId, visitParams);
         return Ok(visits);
     }
 

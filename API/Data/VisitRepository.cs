@@ -1,9 +1,12 @@
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Data
 {
@@ -28,9 +31,35 @@ namespace API.Data
              return await _context.Visits.Where(x => x.DoctorId == doctorId).ProjectTo<VisitDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
-        public async Task<IEnumerable<VisitDto>> GetPatientVisitsList(int patientId)
+        public async Task<PagedList<VisitDto>> GetPatientVisitsListAsync(int patientId, VisitParams visitParams)
         {
-            return await _context.Visits.Where(x => x.PatientId == patientId).ProjectTo<VisitDto>(_mapper.ConfigurationProvider).ToListAsync();
+            var query = _context.Visits.Where(x => x.PatientId == patientId).AsQueryable();
+
+            query = visitParams.Status switch
+            {
+                "cancelled" => query.Where(s => s.Status == VisitStatus.CANCELED),
+                "lasting" => query.Where(s => s.Status == VisitStatus.LAST),
+                "completed" => query.Where(s => s.Status == VisitStatus.COMPLETED),
+                _ => query.Where(s => s.Status == VisitStatus.PLANNED)
+            };
+
+            if(!visitParams.Date.IsNullOrEmpty())
+            {
+                var date = DateTime.Parse(visitParams.Date);
+                query = query.Where(d => d.PlannedDate.Date == date.Date);
+            }
+
+            if(!visitParams.FirstName.IsNullOrEmpty())
+            {
+                query = query.Where(d => d.Doctor.FirstName == visitParams.FirstName);
+            }
+
+            if(!visitParams.LastName.IsNullOrEmpty())
+            {
+                query = query.Where(d => d.Doctor.LastName == visitParams.LastName);
+            }
+
+            return await PagedList<VisitDto>.CreateAsync(query.AsNoTracking().ProjectTo<VisitDto>(_mapper.ConfigurationProvider), visitParams.PageNumber, visitParams.PageSize);
         }
 
         public async Task<Visit> GetVisitById(int visitId)
