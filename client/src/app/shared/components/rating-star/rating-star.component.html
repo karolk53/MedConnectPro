@@ -1,0 +1,10 @@
+<!-- <ng-container *ngFor="let star of stars">
+    <span [class.fa]="star.full" [class.fa-star-half-alt]="star.half"></span>
+    <i class="fa fa-solid fa-star"></i>
+    <i class="fa fa-solid fa-star-half"></i>
+</ng-container> -->
+
+<ng-container *ngFor="let star of stars">
+    <span class="star" [class.fa]="star.full || star.half" [class.fa-star]="star.full"
+        [class.fa-star-half]="star.half"></span>
+</ng-container>
