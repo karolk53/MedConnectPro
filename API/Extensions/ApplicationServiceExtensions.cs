@@ -31,6 +31,7 @@ namespace API.Extensions
             services.AddScoped<INotesRepository, NotesRepository>();
             services.AddScoped<IDoctorServiceRepository, DoctorServiceRepository>();
             services.AddScoped<IOfficeRepository, OfficeRepository>();
+            services.AddScoped<IVisitRepository, VisitRepository>();
 
             return services;
         }

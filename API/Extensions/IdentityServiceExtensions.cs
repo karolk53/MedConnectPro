@@ -26,6 +26,7 @@ namespace API.Extensions
                 options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
                 options.AddPolicy("DoctorOnly", policy => policy.RequireRole("Doctor"));
                 options.AddPolicy("PatientOnly", policy => policy.RequireRole("Patient"));
+                options.AddPolicy("DoctorPatientOnly", policy => policy.RequireRole("Patient", "Doctor"));
             });
             
 

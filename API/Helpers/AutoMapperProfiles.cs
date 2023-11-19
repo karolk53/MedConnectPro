@@ -44,6 +44,8 @@ namespace API.Helpers
                 .ForMember(dest => dest.PostCode, opt => opt.MapFrom(src => src.Address.PostCode))
                 .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Address.City));
             CreateMap<OfficeCreateDto, Office>();
+
+            CreateMap<Visit, VisitDto>();
         }
     }
 }

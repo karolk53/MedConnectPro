@@ -32,6 +32,7 @@ namespace API.Data
             return await _context.Patients
                             .Include(a => a.Address)
                             .Include(n => n.Notes)
+                            .Include(v => v.Visits)
                             .SingleOrDefaultAsync(x => x.Id == id);
         }
 
