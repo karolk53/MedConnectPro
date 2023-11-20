@@ -1,0 +1,75 @@
+using API.DTOs;
+using API.Entities;
+using API.Helpers;
+using API.Interfaces;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.IdentityModel.Tokens;
+
+namespace API.Data
+{
+    public class VisitRepository : IVisitRepository
+    {
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
+
+        public VisitRepository(DataContext context, IMapper mapper)
+        {
+            this._mapper = mapper;
+            this._context = context;
+        }
+
+        public void AddNewVisit(Visit visit)
+        {
+            _context.Visits.Add(visit);
+        }
+
+        public async Task<IEnumerable<VisitDto>> GetDoctorVisitsList(int doctorId)
+        {
+             return await _context.Visits.Where(x => x.DoctorId == doctorId).ProjectTo<VisitDto>(_mapper.ConfigurationProvider).ToListAsync();
+        }
+
+        public async Task<PagedList<VisitDto>> GetPatientVisitsListAsync(int patientId, VisitParams visitParams)
+        {
+            var query = _context.Visits.Where(x => x.PatientId == patientId).AsQueryable();
+
+            query = visitParams.Status switch
+            {
+                "cancelled" => query.Where(s => s.Status == VisitStatus.CANCELED),
+                "lasting" => query.Where(s => s.Status == VisitStatus.LAST),
+                "completed" => query.Where(s => s.Status == VisitStatus.COMPLETED),
+                _ => query.Where(s => s.Status == VisitStatus.PLANNED)
+            };
+
+            if(!visitParams.Date.IsNullOrEmpty())
+            {
+                var date = DateTime.Parse(visitParams.Date);
+                query = query.Where(d => d.PlannedDate.Date == date.Date);
+            }
+
+            if(!visitParams.FirstName.IsNullOrEmpty())
+            {
+                query = query.Where(d => d.Doctor.FirstName == visitParams.FirstName);
+            }
+
+            if(!visitParams.LastName.IsNullOrEmpty())
+            {
+                query = query.Where(d => d.Doctor.LastName == visitParams.LastName);
+            }
+
+            return await PagedList<VisitDto>.CreateAsync(query.AsNoTracking().ProjectTo<VisitDto>(_mapper.ConfigurationProvider), visitParams.PageNumber, visitParams.PageSize);
+        }
+
+        public async Task<Visit> GetVisitById(int visitId)
+        {
+            return await _context.Visits.FindAsync(visitId);
+        }
+
+        public async Task<bool> SaveAllAsync()
+        {
+            return await _context.SaveChangesAsync() > 0;
+        }
+    }
+}

@@ -283,6 +283,43 @@ namespace API.Data.Migrations
                     b.ToTable("Specialisations");
                 });
 
+            modelBuilder.Entity("API.Entities.Visit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("PlannedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Visits");
+                });
+
             modelBuilder.Entity("API.Entities.Doctor", b =>
                 {
                     b.HasOne("API.Entities.Office", "Office")
@@ -377,6 +414,25 @@ namespace API.Data.Migrations
                     b.Navigation("Office");
                 });
 
+            modelBuilder.Entity("API.Entities.Visit", b =>
+                {
+                    b.HasOne("API.Entities.Doctor", "Doctor")
+                        .WithMany("Visits")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.Patient", "Patient")
+                        .WithMany("Visits")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("API.Entities.Doctor", b =>
                 {
                     b.Navigation("DoctorServices");
@@ -384,6 +440,8 @@ namespace API.Data.Migrations
                     b.Navigation("DoctorsSpecialisations");
 
                     b.Navigation("Notes");
+
+                    b.Navigation("Visits");
                 });
 
             modelBuilder.Entity("API.Entities.Office", b =>
@@ -394,6 +452,8 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Patient", b =>
                 {
                     b.Navigation("Notes");
+
+                    b.Navigation("Visits");
                 });
 
             modelBuilder.Entity("API.Entities.Photo", b =>

@@ -24,6 +24,7 @@ public class DataContext : DbContext
     public DbSet<DoctorService> DoctorServices { get; set; }
     public DbSet<Shedule> Shedules { get; set; }
     public DbSet<Office> Offices { get; set; }
+    public DbSet<Visit> Visits { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -63,6 +64,21 @@ public class DataContext : DbContext
             .Property(h => h.Hours)
             .Metadata
             .SetValueComparer(vc);
+
+        modelBuilder.Entity<Visit>()
+            .HasOne(d => d.Doctor)
+            .WithMany(v => v.Visits)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<Visit>()
+            .HasOne(d => d.Patient)
+            .WithMany(v => v.Visits)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Visit>()
+            .Property(p => p.Status)
+            .HasConversion<string>();
+
     }
 
 }

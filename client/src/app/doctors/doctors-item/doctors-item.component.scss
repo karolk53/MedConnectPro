@@ -1,0 +1,53 @@
+@import "../../../styles.scss";
+
+.info {
+  &--loading {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 100px;
+  }
+
+  &--space {
+    margin-top: 40px;
+  }
+
+  &--wrapper {
+    max-width: 1440px;
+    margin: 40px auto;
+  }
+
+  &--container {
+    width: 80%;
+    margin-inline: auto;
+    background-color: $navbarBackground-color;
+    padding: 10px;
+  }
+
+  &--description {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+
+    &--photo {
+      img {
+        width: 400px;
+      }
+    }
+
+    &--content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      h4 {
+        color: $primary-color;
+        @include font-size(+18px);
+        font-weight: 700;
+      }
+
+      span {
+        color: $primary-color;
+      }
+    }
+  }
+}

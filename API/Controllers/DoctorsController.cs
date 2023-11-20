@@ -17,6 +17,7 @@ namespace API.Controllers
         private readonly IPhotoService _photoService;
         private readonly IPhotoRepository _photoRepository;
         private readonly IDoctorServiceRepository _doctorServiceRepository;
+        private readonly IVisitRepository _visitRepository;
         
         public DoctorsController(
             IDoctorRepository repository,
@@ -24,12 +25,14 @@ namespace API.Controllers
             ISpecialisationRepository specialisationRepository,
             IPhotoService photoService,
             IDoctorServiceRepository doctorServiceRepository,
+            IVisitRepository visitRepository,
             IMapper mapper)
         {
             this._photoRepository = photoRepository;
             this._photoService = photoService;
             this._specialisationRepository = specialisationRepository;
             this._doctorServiceRepository = doctorServiceRepository;
+            this._visitRepository = visitRepository;
             this._mapper = mapper;
             this._repository = repository;
 
@@ -175,6 +178,14 @@ namespace API.Controllers
 
             return BadRequest("Failed to delete service");
 
+        }
+
+        [Authorize(Policy = "DoctorOnly")]
+        [HttpGet("visits")]
+        public async Task<ActionResult<IEnumerable<VisitDto>>> GetDoctorsVisitsList()
+        {
+            var visits = await _visitRepository.GetDoctorVisitsList(User.GetUserId());
+            return Ok(visits);
         }
     }
 }
