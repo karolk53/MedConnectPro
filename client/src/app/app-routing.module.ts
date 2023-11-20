@@ -18,6 +18,11 @@ const routes: Routes = [
         (m) => m.AccountProfileModule
       ),
   },
+  {
+    path: 'doctors',
+    loadChildren: () =>
+      import('./doctors/doctors.module').then((m) => m.DoctorsModule),
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

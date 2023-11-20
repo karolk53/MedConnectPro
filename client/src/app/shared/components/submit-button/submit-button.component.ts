@@ -9,6 +9,7 @@ export class SubmitButtonComponent {
   @Input() disabled: boolean = false;
   @Input() text: string = 'Submit';
   @Input() isLoading: boolean = false;
+  @Input() isBig: boolean = false;
 
   @Output() clickEvent = new EventEmitter<void>();
 

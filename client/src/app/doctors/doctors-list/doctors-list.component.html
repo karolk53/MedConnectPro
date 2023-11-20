@@ -1,0 +1,42 @@
+<app-dotors-filters></app-dotors-filters>
+
+<div class="list--wrapper">
+    <div class="list--content">
+        <div class="list--header">
+            <h4>Results:</h4>
+            <div class="list--header--sorting">
+                <span>Sorting:</span>
+                <select class="form-select" aria-label="Soring" (change)="onSortingChange($event)">
+                    <option value="None" selected>None</option>
+                    <option value="Desc">Descending</option>
+                    <option value="Asc">Ascending</option>
+                </select>
+            </div>
+
+        </div>
+
+        <ng-container *ngIf="isLoading$ | async; else doctorsListOrEmpty">
+            <!-- Display loading message -->
+            <div class="list--loading"><i class="fa fa-solid fa-spinner fa-spin"></i></div>
+        </ng-container>
+
+        <ng-template #doctorsListOrEmpty>
+            <ng-container *ngIf="doctors.length > 0; else noDoctorsMessage">
+                <!-- Doctors list -->
+                <ng-container *ngFor="let doctor of doctors">
+
+                    <app-doctor-list-item [email]="doctor.email" [id]="doctor.id" [firstName]="doctor.firstName"
+                        [lastName]="doctor.lastName" [photoUrl]="doctor.photoUrl" [rating]="doctor.totalRating"
+                        [ratingCount]="doctor.notesCount">
+                    </app-doctor-list-item>
+                </ng-container>
+            </ng-container>
+
+            <ng-template #noDoctorsMessage>
+                <!-- Doctors list is empty -->
+                <div class="list--empty">No doctors found with the selected filters. </div>
+            </ng-template>
+        </ng-template>
+
+    </div>
+</div>

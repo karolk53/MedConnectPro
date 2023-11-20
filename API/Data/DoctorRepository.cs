@@ -43,7 +43,20 @@ namespace API.Data
         {
             var query = _context.Doctors.AsQueryable();
 
-            query = query.Where(x => x.DoctorsSpecialisations.Any(x => x.Specialisation.Name == doctorParams.Specialisation));
+            if (!string.IsNullOrEmpty(doctorParams.Specialisation))
+            {
+                query = query.Where(x => x.DoctorsSpecialisations.Any(x => x.Specialisation.Name == doctorParams.Specialisation));
+            }
+
+            if (!string.IsNullOrEmpty(doctorParams.SortByTotalRating))
+            {
+                query = doctorParams.SortByTotalRating switch
+                {
+                    "Asc" => query.OrderBy(x => x.TotalRating),
+                    "Desc" => query.OrderByDescending(x => x.TotalRating),
+                    _ => query.OrderBy(x => x.TotalRating)
+                };
+            }
 
             return await PagedList<DoctorListDto>.CreateAsync(query.AsNoTracking().ProjectTo<DoctorListDto>(_mapper.ConfigurationProvider), doctorParams.PageNumber, doctorParams.PageSize);
         }

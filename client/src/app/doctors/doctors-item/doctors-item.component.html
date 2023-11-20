@@ -1,0 +1,35 @@
+<ng-container *ngIf="isLoading; else doctorItem">
+    <div class="info--loading"><i class="fa fa-solid fa-spinner fa-spin"></i></div>
+</ng-container>
+
+<ng-template #doctorItem>
+    <div class="info--wrapper">
+        <!-- info -->
+        <div class="info--container">
+            <div class="info--description">
+                <div class="info--description--photo">
+                    <img [src]="doctor?.photoUrl !== null ? doctor?.photoUrl : 'https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png'"
+                        alt="User Photo">
+                </div>
+                <div class="info--description--content">
+                    <h4>{{doctor?.firstName || "Name"}} {{doctor?.firstName || "Lastname"}}</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae, dolor unde! Vitae ipsam doloribus
+                        commodi ducimus aliquam aliquid minima ipsa, possimus eaque dignissimos perspiciatis obcaecati
+                        quidem iusto placeat, praesentium expedita?</p>
+                    <div class="info--description--content-item"> <span>Specializations:</span> A, B, C </div>
+                    <div class="info--description--content-item"> <span>Email:</span> {{doctor?.email}} </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- calendary -->
+        <div class="info--container info--space">
+            <h4>Calendary</h4>
+        </div>
+
+        <!-- Reviews -->
+        <div class="info--container info--space">
+            <h4>Reviews</h4>
+        </div>
+    </div>
+</ng-template>
