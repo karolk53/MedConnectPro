@@ -14,9 +14,11 @@ public class PatientsController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IPatientRepository _patientRepository;
+        private readonly IVisitRepository _visitRepository;
 
-    public PatientsController(IPatientRepository patientRepository, IMapper mapper)
+    public PatientsController(IPatientRepository patientRepository, IMapper mapper, IVisitRepository visitRepository)
     {
+        this._visitRepository = visitRepository;
         this._patientRepository = patientRepository;
         this._mapper = mapper;
     }
@@ -68,6 +70,14 @@ public class PatientsController : BaseApiController
         return BadRequest("Faild to update address!");
     }
 
+    [Authorize(Policy = "PatientOnly")]
+    [HttpGet("visits")]
+    public async Task<ActionResult<IEnumerable<Visit>>> GetPatientsVisitsList([FromQuery]VisitParams visitParams)
+    {
+        var patientId = User.GetUserId();
+        var visits = await _visitRepository.GetPatientVisitsListAsync(patientId, visitParams);
+        return Ok(visits);
+    }
 
 
 

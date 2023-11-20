@@ -1,6 +1,9 @@
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
+using API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -8,15 +11,22 @@ namespace API.Controllers
     public class ShedulesController : BaseApiController
     {
         private readonly DataContext _context;
-        public ShedulesController(DataContext context)
+        private readonly IDoctorRepository _doctorRepository;
+        public ShedulesController(DataContext context, IDoctorRepository doctorRepository)
         {
+            this._doctorRepository = doctorRepository;
             this._context = context;
         }
 
+        [Authorize(Policy = "DoctorOnly")]
         [HttpPost]
-        public async Task<ActionResult<Shedule>> CreateNewShedule(SheduleCreateDto sheduleCreateDto)
+        public async Task<ActionResult> CreateNewShedule(SheduleCreateDto sheduleCreateDto)
         {
             
+            var doctor = await _doctorRepository.GetDoctorById(User.GetUserId());
+            if(doctor == null) NotFound();
+
+            if(doctor.Office == null) return BadRequest("You have to add office first");
 
             var hours = new List<TimeOnly>{};
             var startHour = TimeOnly.Parse(sheduleCreateDto.StartHour);
@@ -37,10 +47,30 @@ namespace API.Controllers
                 Hours = hours
             };
 
-            _context.Shedules.Add(shedule);
-            if( await _context.SaveChangesAsync() > 0) return Ok(shedule);
+            doctor.Office.Shedules.Add(shedule);
+;
+            if( await _context.SaveChangesAsync() > 0) return Ok();
 
             return BadRequest("Failed to add shedule");
         }
+
+        [Authorize(Policy = "DoctorOnly")]
+        [HttpDelete("{sheduleId}")]
+        public async Task<ActionResult> DeleteShedule(int sheduleId)
+        {
+            var doctor = await _doctorRepository.GetDoctorById(User.GetUserId());
+            if(doctor == null) return Unauthorized();
+
+            var shedule = await _context.Shedules.FindAsync(sheduleId);
+            if(!doctor.Office.Shedules.Contains(shedule)) return NotFound();
+
+            _context.Shedules.Remove(shedule);
+
+            if(await _doctorRepository.SaveAllAsync()) return NoContent();
+            
+            return BadRequest("Failed to delete shedule");
+        }
+
+        //EDIT
     }
 }

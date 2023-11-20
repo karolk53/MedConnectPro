@@ -25,6 +25,8 @@ namespace API.Data
             return await _context.Doctors
                             .Include(p => p.Photo)
                             .Include(n => n.Notes)
+                            .Include(o => o.Office).ThenInclude(s => s.Shedules)
+                            .Include(v => v.Visits)
                             .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -32,6 +34,7 @@ namespace API.Data
         {
             return _context.Doctors
                     .Where(x => x.Id == id)
+                    .Include(o => o.Office)
                     .Include(ds => ds.DoctorServices)
                     .Include(s => s.DoctorsSpecialisations)
                     .ThenInclude(z => z.Specialisation)

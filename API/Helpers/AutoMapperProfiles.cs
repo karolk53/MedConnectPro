@@ -33,6 +33,19 @@ namespace API.Helpers
             CreateMap<NoteDto, Note>();
 
             CreateMap<DoctorService, DoctorServiceDto>();
+
+            CreateMap<Shedule, SheduleDto>();
+
+            CreateMap<Office, OfficeCreateDto>();
+            CreateMap<Office, OfficeDto>()
+                .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Address.Street))
+                .ForMember(dest => dest.BuildingNumber, opt => opt.MapFrom(src => src.Address.BuildingNumber))
+                .ForMember(dest => dest.FlatNumber, opt => opt.MapFrom(src => src.Address.FlatNumber))
+                .ForMember(dest => dest.PostCode, opt => opt.MapFrom(src => src.Address.PostCode))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Address.City));
+            CreateMap<OfficeCreateDto, Office>();
+
+            CreateMap<Visit, VisitDto>();
         }
     }
 }
