@@ -23,6 +23,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./doctors/doctors.module').then((m) => m.DoctorsModule),
   },
+  {
+    path: 'shedule',
+    loadChildren: () =>
+      import('./shedule/shedule.module').then((m) => m.SheduleModule),
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

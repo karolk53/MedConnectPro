@@ -113,6 +113,8 @@
       min-width: 120px;
       text-align: center;
       cursor: pointer;
+      height: 40px;
+      position: relative;
 
       &:hover {
         border-bottom: 2px solid $textBlack-color;
@@ -122,8 +124,8 @@
     ul {
       display: none;
       position: absolute;
-
-      transform: translateY(80%);
+      bottom: -20px;
+      transform: translateY(90%);
       list-style: none;
       width: 100%;
       background-color: $navbarBackground-color;

@@ -29,6 +29,7 @@
                             <li routerLink="/profile/profile-doctor" *ngIf="user.role === 'Doctor'">Doctor
                                 profile</li>
                             <li routerLink="/profile/edit-profile-doctor" *ngIf="user.role === 'Doctor'">Edit Data
+                            <li routerLink="/profile/edit-profile-doctor" *ngIf="user.role === 'Doctor'">Edit Schedule
                             </li>
                             <li (click)="accountService.logout()">Logout</li>
                         </ul>
