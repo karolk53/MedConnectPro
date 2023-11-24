@@ -4,5 +4,6 @@ namespace API.Helpers
     {
         public string Specialisation { get; set; }
         public string SortByTotalRating {get; set;}
+        public string City { get; set; }
     }
 }

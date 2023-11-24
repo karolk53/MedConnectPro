@@ -5,7 +5,6 @@ using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Data
@@ -49,14 +48,9 @@ namespace API.Data
                 query = query.Where(d => d.PlannedDate.Date == date.Date);
             }
 
-            if(!visitParams.FirstName.IsNullOrEmpty())
+            if(!visitParams.Name.IsNullOrEmpty())
             {
-                query = query.Where(d => d.Doctor.FirstName == visitParams.FirstName);
-            }
-
-            if(!visitParams.LastName.IsNullOrEmpty())
-            {
-                query = query.Where(d => d.Doctor.LastName == visitParams.LastName);
+                query = query.Where(x => string.Concat(x.Doctor.FirstName, " " ,x.Doctor.LastName).Contains(visitParams.Name));
             }
 
             return await PagedList<VisitDto>.CreateAsync(query.AsNoTracking().ProjectTo<VisitDto>(_mapper.ConfigurationProvider), visitParams.PageNumber, visitParams.PageSize);
@@ -64,7 +58,10 @@ namespace API.Data
 
         public async Task<Visit> GetVisitById(int visitId)
         {
-            return await _context.Visits.FindAsync(visitId);
+            return await _context.Visits
+                                    .Include(p => p.Patient)
+                                    .Include(d => d.Doctor)
+                                    .FirstOrDefaultAsync(x => x.Id == visitId);
         }
 
         public async Task<bool> SaveAllAsync()

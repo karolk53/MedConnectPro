@@ -59,6 +59,18 @@ namespace API.Controllers
             return BadRequest("Failed to add visit");
         }
 
+        [Authorize(Policy = "DoctorPatientOnly")]
+        [HttpGet("{visitId}")]
+        public async Task<ActionResult<VisitDto>> GetSingleVisit(int visitId)
+        {
+            var visit = await _visitRepository.GetVisitById(visitId);
+            if(visit == null) return NotFound();
+            var userId = User.GetUserId();
+            if(visit.DoctorId == userId || visit.PatientId == userId) return Ok(_mapper.Map<VisitDto>(visit));
+            return BadRequest("Failed to get visit");
+        }
+
+
         [Authorize(Policy = "DoctorOnly")]
         [HttpPut("start/{visitId}")]
         public async Task<ActionResult> StartVisit(int visitId) //START DATE
@@ -110,8 +122,6 @@ namespace API.Controllers
             if(await _visitRepository.SaveAllAsync()) return NoContent();
             return BadRequest("Failed to cancel visit");
         }
-
-
 
         private bool ValidDate(DateTime visitDate, Doctor doctor)
         {

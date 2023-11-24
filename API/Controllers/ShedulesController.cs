@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize(Policy = "DoctorOnly")]
     public class ShedulesController : BaseApiController
     {
         private readonly DataContext _context;
@@ -18,7 +19,6 @@ namespace API.Controllers
             this._context = context;
         }
 
-        [Authorize(Policy = "DoctorOnly")]
         [HttpPost]
         public async Task<ActionResult> CreateNewShedule(SheduleCreateDto sheduleCreateDto)
         {
@@ -54,7 +54,6 @@ namespace API.Controllers
             return BadRequest("Failed to add shedule");
         }
 
-        [Authorize(Policy = "DoctorOnly")]
         [HttpDelete("{sheduleId}")]
         public async Task<ActionResult> DeleteShedule(int sheduleId)
         {
