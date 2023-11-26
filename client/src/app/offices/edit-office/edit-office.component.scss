@@ -1,9 +1,9 @@
 @import "../../../styles.scss";
 
-.shedule {
+.customform {
   &--wrapper {
     background-color: $navbarBackground-color;
-    max-width: 550px;
+    max-width: 400px;
     margin-top: 80px;
     padding: 40px 20px;
     margin-inline: auto;
@@ -64,58 +64,14 @@
     }
   }
 
-  &--days {
+  &--row {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-
-    &--title {
-      text-align: center;
-      margin-inline: auto;
-      margin-bottom: 10px;
-      font-weight: 500;
-      @include font-size(+2px);
-    }
-
-    &--item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      border: 2px solid $primary-color;
-      width: 10px;
-      height: 10px;
-      border-radius: 20px;
-      cursor: pointer;
-      background-size: 200% 100%;
-      background-position: -100% 0;
-      transition: all 0.5s ease-in-out;
-      font-weight: 600;
-
-      &:hover {
-        background-position: 100% 0;
-      }
-    }
-  }
-
-  &--form {
-    margin: 30px 0;
-    width: 300px;
-    margin-inline: auto;
-  }
-
-  &--succes {
-    color: #11a111;
+    flex-direction: row;
+    gap: 20px;
   }
 
   &--error {
     text-align: center;
     color: red;
   }
-}
-
-.active {
-  background-color: $primary-color;
-  color: #fff;
 }

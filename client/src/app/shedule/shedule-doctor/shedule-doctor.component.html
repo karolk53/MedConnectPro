@@ -1,1 +1,18 @@
-<p>shedule-doctor works!</p>
+<div class="profile--wrapper" *ngFor="let day of data">
+    <span>{{ day.weekDay }}</span>
+    <div class="profile--data">
+        <div class="profile--data--item">
+            Visit Time: <b>{{ day.visitTime === null ? "-" : day.visitTime }}</b>
+        </div>
+        <div class="profile--data--item">
+            Hours:
+            <ng-container *ngIf="day.hours && day.hours.length > 0; else noHours">
+                <b>{{ day.hours.join(', ') }}</b>
+            </ng-container>
+            <ng-template #noHours>
+                <b>-</b>
+            </ng-template>
+        </div>
+        <!-- Dodaj kolejne pola, jeśli są dostępne -->
+    </div>
+</div>

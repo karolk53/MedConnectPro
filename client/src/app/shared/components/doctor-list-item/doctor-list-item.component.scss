@@ -60,6 +60,7 @@
     justify-content: center;
     //color: $color-gold;
     font-weight: 700;
+    @include font-size(+0px);
 
     span {
       margin-top: -10px;

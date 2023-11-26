@@ -124,8 +124,8 @@
     ul {
       display: none;
       position: absolute;
-      bottom: -20px;
-      transform: translateY(90%);
+      bottom: 0px;
+      transform: translateY(100%);
       list-style: none;
       width: 100%;
       background-color: $navbarBackground-color;
@@ -136,20 +136,55 @@
 
       li {
         text-align: center;
-        padding-top: 2px;
-        padding-bottom: 2px;
+        margin-top: 2px;
+        margin-bottom: 2px;
 
         &:hover {
-          transition: 0.3s all;
-          cursor: pointer;
-          background-color: $primary-color;
-          color: #fff;
+          &:not(.navBar--settings--space) {
+            transition: 0.3s all;
+            cursor: pointer;
+            background-color: $primary-color;
+            color: #fff;
+          }
         }
       }
     }
 
     &:hover ul {
       display: block;
+    }
+
+    &--space {
+      cursor: default !important;
+      font-weight: 600;
+      margin: 6px 0 !important;
+      position: relative;
+      color: $primary-color;
+
+      ul li:hover {
+        background-color: $navbarBackground-color !important;
+      }
+
+      &::before {
+        position: absolute;
+        content: "";
+        width: 20%;
+        top: 50%;
+        height: 2px;
+        background-color: $primary-color;
+        transform: translateY(-50%) translateX(30%);
+        left: 0;
+      }
+      &::after {
+        position: absolute;
+        content: "";
+        width: 20%;
+        top: 50%;
+        height: 2px;
+        background-color: $primary-color;
+        transform: translateY(-50%) translateX(-30%);
+        right: 0;
+      }
     }
   }
 
@@ -158,6 +193,25 @@
     display: inline-flex;
     align-items: center;
     font-weight: 600;
+  }
+
+  &--textSizeButtonWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  &--textSizeButton {
+    border: 2px solid $primary-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    color: $primary-color;
+    border-radius: 20px;
+    cursor: pointer;
   }
 }
 
@@ -173,4 +227,34 @@
   margin: 10px;
   border-radius: 5px;
   text-decoration: none;
+}
+
+.fa-beat {
+  animation: fa-beat 3s ease infinite;
+}
+@keyframes fa-beat {
+  0% {
+    transform: scale(1);
+  }
+  5% {
+    transform: scale(1.25);
+  }
+  20% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.25);
+  }
+  50% {
+    transform: scale(1);
+  }
+  55% {
+    transform: scale(1.25);
+  }
+  70% {
+    transform: scale(1);
+  }
 }

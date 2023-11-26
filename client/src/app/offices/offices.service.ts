@@ -1,25 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { Shedule, doctorInfo } from '../shared/models/doctorInfo';
+import { Office, doctorInfo } from '../shared/models/doctorInfo';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ScheduleService {
-  private apiUrl = 'https://localhost:5001/api/shedules';
+export class OfficeService {
   token = localStorage.getItem('token');
 
-  private scheduleInfoSubject = new BehaviorSubject<Shedule[] | null>(null);
-  scheduleInfo$ = this.scheduleInfoSubject.asObservable();
+  private officeInfoSubject = new BehaviorSubject<Office | null>(null);
+  officeInfo$ = this.officeInfoSubject.asObservable();
 
   constructor(private http: HttpClient) {
     if (this.token) {
-      this.loadScheduleInfo();
+      this.loadOfficeInfo();
     }
   }
 
-  private loadScheduleInfo() {
+  private loadOfficeInfo() {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.token}`,
@@ -30,23 +29,29 @@ export class ScheduleService {
         headers,
       })
       .pipe(
-        tap((scheduleInfo) => {
-          this.scheduleInfoSubject.next(scheduleInfo.office.shedules);
+        tap((doctorInfo) => {
+          if (doctorInfo && doctorInfo.office) {
+            this.officeInfoSubject.next(doctorInfo.office);
+          }
         })
       )
       .subscribe();
   }
 
-  updateScheduleInfo(scheduleInfo: any) {
-    this.scheduleInfoSubject.next(scheduleInfo);
+  updateOfficeInfo(office: Office) {
+    this.officeInfoSubject.next(office);
   }
 
-  addSchedule(scheduleData: any): Observable<any> {
+  createOffice(officeData: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.token}`,
     });
 
-    return this.http.post<any>(this.apiUrl, scheduleData, { headers });
+    return this.http.post<any>(
+      'https://localhost:5001/api/doctors/profile',
+      officeData,
+      { headers }
+    );
   }
 }

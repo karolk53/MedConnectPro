@@ -28,6 +28,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./shedule/shedule.module').then((m) => m.SheduleModule),
   },
+  {
+    path: 'office',
+    loadChildren: () =>
+      import('./offices/offices.module').then((m) => m.OfficesModule),
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
