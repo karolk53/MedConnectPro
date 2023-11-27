@@ -11,5 +11,6 @@ namespace API.Interfaces
         Task<PagedList<VisitDto>> GetPatientVisitsListAsync(int patientId, VisitParams visitParams);
         Task<IEnumerable<VisitDto>> GetDoctorVisitsList(int doctorId);
         Task<bool> SaveAllAsync();
+        Task<List<VisitPlannedDto>> GetPlannedVisits(int doctorId, string startDate, string endDate);
     }
 }

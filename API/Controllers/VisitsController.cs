@@ -30,7 +30,7 @@ namespace API.Controllers
 
         [Authorize(Policy = "PatientOnly")]
         [HttpPost("{doctorId}")]
-        public async Task<ActionResult<Visit>> RegisterNewVisit(VisitAddDto visitDto,int doctorId)
+        public async Task<ActionResult> RegisterNewVisit(VisitAddDto visitDto,int doctorId)
         {
             var patient = await _patientRepository.GetPatientById(User.GetUserId());
             if(patient == null) return Unauthorized();
@@ -54,7 +54,7 @@ namespace API.Controllers
             };
 
             _visitRepository.AddNewVisit(visit);
-            if( await _visitRepository.SaveAllAsync()) return Ok(visit);
+            if( await _visitRepository.SaveAllAsync()) return Ok();
 
             return BadRequest("Failed to add visit");
         }

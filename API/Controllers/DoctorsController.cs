@@ -200,5 +200,18 @@ namespace API.Controllers
             var visits = await _visitRepository.GetDoctorVisitsList(User.GetUserId());
             return Ok(visits);
         }
+
+        [AllowAnonymous]
+        [HttpGet("planned/{doctorId}")]
+        public async Task<ActionResult<IEnumerable<DateTime>>> GetCurrentShedule(int doctorId, [FromQuery]string startDate,[FromQuery]string endDate)
+        {
+            var doctor = await _repository.GetDoctorById(doctorId);
+            if(doctor == null) return NotFound();
+
+            var shedule = await _visitRepository.GetPlannedVisits(doctorId, startDate, endDate);
+
+            return Ok(shedule);
+        }
+
     }
 }

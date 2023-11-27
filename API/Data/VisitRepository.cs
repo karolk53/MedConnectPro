@@ -56,6 +56,19 @@ namespace API.Data
             return await PagedList<VisitDto>.CreateAsync(query.AsNoTracking().ProjectTo<VisitDto>(_mapper.ConfigurationProvider), visitParams.PageNumber, visitParams.PageSize);
         }
 
+        public async Task<List<VisitPlannedDto>> GetPlannedVisits(int doctorId, string startDate, string endDate)
+        {
+            return await _context.Visits
+                    .Where(x => x.DoctorId == doctorId)
+                    .Where(x => x.Status == VisitStatus.PLANNED)
+                    .Where(x => 
+                        x.PlannedDate >= DateTime.Parse(startDate) && 
+                        x.PlannedDate <= DateTime.Parse(endDate)
+                        )
+                    .ProjectTo<VisitPlannedDto>(_mapper.ConfigurationProvider)
+                    .ToListAsync();
+        }
+
         public async Task<Visit> GetVisitById(int visitId)
         {
             return await _context.Visits
