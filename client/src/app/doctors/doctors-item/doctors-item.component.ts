@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { DoctorService } from '../doctor.service';
 import { doctorInfo } from 'src/app/shared/models/doctorInfo';
+import { ɵparseCookieValue } from '@angular/common';
 
 @Component({
   selector: 'app-doctors-item',
@@ -23,6 +24,7 @@ export class DoctorsItemComponent {
 
   ngOnInit(): void {
     this.loadDoctor();
+    console.log('doctor', this.doctor);
   }
 
   loadDoctor() {

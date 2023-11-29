@@ -49,7 +49,7 @@ export class OfficeService {
     });
 
     return this.http.post<any>(
-      'https://localhost:5001/api/doctors/profile',
+      'https://localhost:5001/api/offices',
       officeData,
       { headers }
     );

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, tap, switchMap } from 'rxjs/operators';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { doctorListItem } from '../shared/models/doctorsListItem';
 import { doctorInfo } from '../shared/models/doctorInfo';
+import { CommentModule } from '../shared/models/comment';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,9 @@ export class DoctorService {
 
   private doctorsSubject = new BehaviorSubject<doctorListItem[]>([]);
   doctors$: Observable<doctorListItem[]> = this.doctorsSubject.asObservable();
+
+  private commentsSubject = new BehaviorSubject<CommentModule[]>([]);
+  comments$: Observable<CommentModule[]> = this.commentsSubject.asObservable();
 
   private sortingValue = 'None';
 
@@ -98,6 +102,46 @@ export class DoctorService {
   getDoctor(id: number) {
     return this.http.get<doctorInfo>(
       'https://localhost:5001/api/doctors/' + id
+    );
+  }
+
+  addDoctorNote(doctorId: number, note: any): Observable<any> {
+    const endpoint = `https://localhost:5001/api/notes/${doctorId}`;
+    
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`, // Zastąp 'your_token_key' odpowiednim kluczem z local storage
+    });
+
+    return this.http.post(endpoint, note, { headers }).pipe(
+      tap(() => {
+        // Dodaj tutaj dodatkowe akcje po pomyślnym dodaniu oceny, jeśli są potrzebne
+        console.log('Note added successfully');
+      }),
+      catchError((error) => {
+        console.error('Error adding note', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  getComments(doctorId: number): Observable<CommentModule[]> {
+    const url = `https://localhost:5001/api/notes/${doctorId}`;
+    return this.http.get<CommentModule[]>(url);
+  }
+
+  updateComments(doctorId: number, newComments: Comment[]): Observable<CommentModule[]> {
+    const url = `https://localhost:5001/api/notes/${doctorId}`;
+    return this.http.put<CommentModule[]>(url, newComments).pipe(
+      // Aktualizuj BehaviorSubject po zaktualizowaniu komentarzy
+      tap(() => this.loadComments(doctorId))
+    );
+  }
+
+  loadComments(doctorId: number): void {
+    this.getComments(doctorId).subscribe(
+      comments => this.commentsSubject.next(comments.reverse()),
+      error => console.error('Error fetching comments', error)
     );
   }
 }
