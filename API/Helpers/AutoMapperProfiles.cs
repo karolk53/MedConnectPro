@@ -33,6 +33,7 @@ namespace API.Helpers
             CreateMap<NoteDto, Note>();
 
             CreateMap<DoctorService, DoctorServiceDto>();
+            CreateMap<DoctorServiceUpdateDto, DoctorService>();
 
             CreateMap<Shedule, SheduleDto>();
 
@@ -45,7 +46,13 @@ namespace API.Helpers
                 .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Address.City));
             CreateMap<OfficeCreateDto, Office>();
 
-            CreateMap<Visit, VisitDto>();
+            CreateMap<Visit, VisitDto>()
+                .ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => string.Join(" ", src.Doctor.FirstName, src.Doctor.LastName)))
+                .ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => string.Join(" ", src.Patient.FirstName, src.Patient.LastName)));
+            CreateMap<Visit, VisitPlannedDto>()
+                .ForMember(dest => dest.DayOfWeek, opt => opt.MapFrom(src => src.PlannedDate.DayOfWeek))
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.PlannedDate.Date.ToString()))
+                .ForMember(dest => dest.Hour, opt => opt.MapFrom(src => src.PlannedDate.TimeOfDay.ToString()));
         }
     }
 }
