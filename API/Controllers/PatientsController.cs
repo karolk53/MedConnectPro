@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+[Authorize(Policy = "PatientOnly")]
 public class PatientsController : BaseApiController
 {
     private readonly IMapper _mapper;
@@ -32,14 +33,13 @@ public class PatientsController : BaseApiController
         return Ok(patients);
     }
 
-    [Authorize(Policy = "PatientOnly")]
+    
     [HttpGet("me")]
     public async Task<ActionResult<PatientProfileDto>> GetPatient()
     {
         return await _patientRepository.GetPatientByIdAsync(User.GetUserId());
     }
 
-    [Authorize(Policy = "PatientOnly")]
     [HttpPut("update")]
     public async Task<ActionResult> UpdatePatientsProfile(PatientUpdateDto updateDto)
     {
@@ -55,8 +55,6 @@ public class PatientsController : BaseApiController
         return BadRequest("Faild to update user!");
     }
 
-
-    [Authorize(Policy = "PatientOnly")]
     [HttpPut("address/update")]
     public async Task<ActionResult<PatientProfileDto>> UpdatePatientsAddress(AddressDto addressDto)
     {
@@ -70,7 +68,6 @@ public class PatientsController : BaseApiController
         return BadRequest("Faild to update address!");
     }
 
-    [Authorize(Policy = "PatientOnly")]
     [HttpGet("visits")]
     public async Task<ActionResult<IEnumerable<Visit>>> GetPatientsVisitsList([FromQuery]VisitParams visitParams)
     {

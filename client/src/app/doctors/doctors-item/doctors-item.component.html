@@ -12,24 +12,66 @@
                         alt="User Photo">
                 </div>
                 <div class="info--description--content">
-                    <h4>{{doctor?.firstName || "Name"}} {{doctor?.firstName || "Lastname"}}</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae, dolor unde! Vitae ipsam doloribus
-                        commodi ducimus aliquam aliquid minima ipsa, possimus eaque dignissimos perspiciatis obcaecati
-                        quidem iusto placeat, praesentium expedita?</p>
-                    <div class="info--description--content-item"> <span>Specializations:</span> A, B, C </div>
-                    <div class="info--description--content-item"> <span>Email:</span> {{doctor?.email}} </div>
+                    <h4>{{doctor?.firstName || "Name"}}</h4>
+                    <h4 class="info--description--content--underline">{{doctor?.lastName || "Lastname"}}</h4> 
+
+                    <!-- <div class="info--description--content-item"> <span>Specializations:</span> A, B, C </div>
+                    <div class="info--description--content-item"> <span>Email:</span> {{doctor?.email}} </div> -->
+                </div>
+            </div>
+            <div class="info--item">
+                <h4>Office</h4>
+                <span> Office name: <b>{{doctor?.office?.name}}</b> </span>
+                <span> Street: <b>{{doctor?.office?.street}}</b></span>
+                <span> City: <b>{{doctor?.office?.city}}</b></span>
+                <span> Post Code: <b>{{doctor?.office?.postCode}}</b></span>
+            </div>
+            <div class="info--item">
+                <h4>Services</h4>
+                <div class="info--item--service" *ngFor="let service of doctor?.doctorServices">
+                    <b>Name:</b> <span>{{service.name}}</span> <b>Description:</b><p> {{service.descripton}}</p> <b>Price: </b> <span>{{service.price}}$</span>
                 </div>
             </div>
         </div>
 
         <!-- calendary -->
         <div class="info--container info--space">
-            <h4>Calendary</h4>
+            <div class="info--item">
+                <h4>Calendary</h4>
+            </div>
+
+            <div *ngIf="mergedSchedule.length !== 0" class="calendary">
+                <div class="calendary--left" (click)="changeWeek(false)"><i class=" fa fa-solid fa-angle-left"></i></div>
+                <div class="calendary--right" (click)="changeWeek(true)"><i class=" fa fa-solid fa-angle-right"></i></div>
+
+                <div *ngFor="let schedule of mergedSchedule; let i = index">
+                  <div class="calendary--row">
+                    <div class="calendary--day">
+                        <span class="calendary--day--name">{{ schedule.weekDay }}</span>
+                        <span class="calendary--day--date">{{weekDays[i].date}}</span>
+
+                    </div>
+
+                    <div class="calendary--hours" >
+                        <div *ngFor="let hour of schedule.hours" 
+                        [class.calendary--hour]="true" 
+                        [class.calendary--hour--free]="hour.free" 
+                        [class.calendary--hour--busy]="!hour.free"
+                        (click)="hour.free ? navigateToVisitAdd(hour.hour, i) : null">
+                        {{ hour.hour }}
+                        </div>  
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
 
         <!-- Reviews -->
         <div class="info--container info--space">
-            <h4>Reviews</h4>
+            <div class="info--item">
+                <h4>Reviews</h4>
+            </div>
+            <app-doctor-reviews [doctorId]="doctor?.id || 0" ></app-doctor-reviews>
         </div>
     </div>
 </ng-template>

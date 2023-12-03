@@ -1,0 +1,26 @@
+<div class=" customform--wrapper">
+    <form [formGroup]="OfficeForm" (ngSubmit)="onSubmit()">
+        <div class="customform--header">
+            <h1 class="mb-3">Edit Office</h1>
+        </div>
+        <app-text-input [formControl]="OfficeForm.controls['Name']" [label]="'Office Name'"></app-text-input>
+        <app-text-input [formControl]="OfficeForm.controls['Street']" [label]="'Street'"></app-text-input>
+        <app-text-input [formControl]="OfficeForm.controls['BuildingNumber']"
+            [label]="'BuildingNumber'"></app-text-input>
+        <app-text-input [formControl]="OfficeForm.controls['FlatNumber']" [label]="'FlatNumber'"></app-text-input>
+        <div class="customform--row">
+            <app-text-input [formControl]="OfficeForm.controls['PostCode']" [label]="'PostCode'"></app-text-input>
+            <app-text-input [formControl]="OfficeForm.controls['City']" [label]="'City'"></app-text-input>
+        </div>
+
+
+        <div class="customform--actions">
+            <app-submit-button [isLoading]="isLoading" [disabled]="OfficeForm.invalid"
+                [text]="'Edit'"></app-submit-button>
+            <span *ngIf="isSuccess" style="color: green;">You have successfully added your office!</span>
+            <a routerLink="/office/show">Show office</a>
+        </div>
+        <div *ngIf="OfficeForm.hasError('loginFailed')" class="customform--error">Incorrect email or password.
+        </div>
+    </form>
+</div>

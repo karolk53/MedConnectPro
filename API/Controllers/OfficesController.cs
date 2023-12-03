@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize(Policy = "DoctorOnly")]
     public class OfficesController : BaseApiController
     {
         private readonly IOfficeRepository _officeRepository;
@@ -20,7 +21,7 @@ namespace API.Controllers
             this._officeRepository = officeRepository;
         }
 
-        [Authorize(Policy = "DoctorOnly")]
+        
         [HttpPost]
         public async Task<ActionResult<Office>> CreateNewOffice(OfficeCreateDto officeDto)
         {
@@ -49,7 +50,6 @@ namespace API.Controllers
 
         }
 
-        [Authorize(Policy = "DoctorOnly")]
         [HttpPut]
         public async Task<ActionResult<OfficeDto>> EditOffice(OfficeCreateDto officeCreateDto, int officeId)
         {

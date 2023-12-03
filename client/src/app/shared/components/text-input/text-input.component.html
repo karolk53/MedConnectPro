@@ -1,5 +1,5 @@
 <div [ngClass]="{'form-floating mb-3': type !== 'file'}">
-    <input *ngIf="type !== 'file'" type={{type}} [formControl]="control" placeholder="{{label}}"
+    <input *ngIf="type !== 'file'"  type={{type}} [formControl]="control" placeholder="{{label}}" [readonly]="disabledValue"
         [ngClass]="(control.touched) ? control.invalid ? 'is-invalid' : 'is-valid' : null" class="form-control">
 
     <input *ngIf="type === 'file'" type="file" [formControl]="control" (change)="onFileInputChange($event)"
@@ -21,6 +21,8 @@
     <div *ngIf="control.errors?.['emailExists']" class="invalid-feedback">Email address is taken
     </div>
     <div *ngIf="control.errors?.['passwordMatch']" class="invalid-feedback">The passwords don't match
+    </div>
+    <div *ngIf="control.errors?.['invalidValue']" class="invalid-feedback">The note value 1-5
     </div>
 
 </div>

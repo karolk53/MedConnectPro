@@ -1,0 +1,16 @@
+<div class=" customform--wrapper">
+    <form [formGroup]="visitForm" (ngSubmit)="onSubmit()">
+        <div class="customform--header">
+            <h1 class="mb-3">Add visit</h1>
+        </div>
+        <app-text-input [formControl]="visitForm.controls['hour']" [label]="'Hour'" [disabledValue]="true"></app-text-input>
+        <app-text-input [formControl]="visitForm.controls['date']" [label]="'Date'" [disabledValue]="true"></app-text-input>
+        <app-text-input [formControl]="visitForm.controls['description']"
+            [label]="'Description'"></app-text-input>
+        <div class="customform--actions">
+            <app-submit-button [disabled]="visitForm.invalid" [text]="'Add'"></app-submit-button>
+        </div>
+        <div  style="color: green;" *ngIf="isSucces" >Added visit!</div>
+        <div *ngIf="isError" class="customform--error">Error</div>
+    </form>
+</div>

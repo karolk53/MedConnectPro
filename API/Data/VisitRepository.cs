@@ -5,7 +5,6 @@ using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Data
@@ -49,22 +48,33 @@ namespace API.Data
                 query = query.Where(d => d.PlannedDate.Date == date.Date);
             }
 
-            if(!visitParams.FirstName.IsNullOrEmpty())
+            if(!visitParams.Name.IsNullOrEmpty())
             {
-                query = query.Where(d => d.Doctor.FirstName == visitParams.FirstName);
-            }
-
-            if(!visitParams.LastName.IsNullOrEmpty())
-            {
-                query = query.Where(d => d.Doctor.LastName == visitParams.LastName);
+                query = query.Where(x => string.Concat(x.Doctor.FirstName, " " ,x.Doctor.LastName).Contains(visitParams.Name));
             }
 
             return await PagedList<VisitDto>.CreateAsync(query.AsNoTracking().ProjectTo<VisitDto>(_mapper.ConfigurationProvider), visitParams.PageNumber, visitParams.PageSize);
         }
 
+        public async Task<List<VisitPlannedDto>> GetPlannedVisits(int doctorId, string startDate, string endDate)
+        {
+            return await _context.Visits
+                    .Where(x => x.DoctorId == doctorId)
+                    .Where(x => x.Status == VisitStatus.PLANNED)
+                    .Where(x => 
+                        x.PlannedDate >= DateTime.Parse(startDate) && 
+                        x.PlannedDate <= DateTime.Parse(endDate)
+                        )
+                    .ProjectTo<VisitPlannedDto>(_mapper.ConfigurationProvider)
+                    .ToListAsync();
+        }
+
         public async Task<Visit> GetVisitById(int visitId)
         {
-            return await _context.Visits.FindAsync(visitId);
+            return await _context.Visits
+                                    .Include(p => p.Patient)
+                                    .Include(d => d.Doctor)
+                                    .FirstOrDefaultAsync(x => x.Id == visitId);
         }
 
         public async Task<bool> SaveAllAsync()

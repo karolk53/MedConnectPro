@@ -1,0 +1,31 @@
+<div class="customform--wrapper">
+    <div>
+        <form [formGroup]="servicesForm" (ngSubmit)="addService()">
+            <h4>Add new services</h4>
+            <div class="customform--row">
+                <app-text-input [formControl]="servicesForm.controls['name']" [label]="'Name'"></app-text-input>
+                <app-text-input [formControl]="servicesForm.controls['description']" [label]="'Descripton'"></app-text-input>
+                <app-text-input [formControl]="servicesForm.controls['price']" [label]="'Price'" [type]="'number'"></app-text-input>
+                <app-submit-button [disabled]="servicesForm.invalid" [isLoading]="isLoading" [text]="'Add'"></app-submit-button>
+            </div>
+            <div *ngIf="isSucces"> <span class="customform--succes">Service added!</span> </div>
+            <div *ngIf="isError"> <span class="customform--error">Error!</span> </div>
+        </form>
+    </div>
+</div>
+
+<div class="customform--wrapper">
+    <h4>Services list</h4>
+    <div class="customform--service" *ngFor="let service of services">
+        <div class="customform--service--item">
+            <div class="customform--service--item--left">
+                <span><b>Name:</b> {{ service.name }}</span>
+                <p><b>Description:</b>{{service.descripton}}</p>
+                <span><b>Price:</b> {{ service.price }}</span>
+            </div>
+
+
+            <div (click)="deleteService(service.id)" class="customform--button">Delete</div>
+        </div>
+    </div>
+</div>

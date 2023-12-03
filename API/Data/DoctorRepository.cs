@@ -61,6 +61,11 @@ namespace API.Data
                 };
             }
 
+            if(!string.IsNullOrEmpty(doctorParams.City))
+            {
+                query = query.Where(x => x.Office.Address.City == doctorParams.City);
+            }
+
             return await PagedList<DoctorListDto>.CreateAsync(query.AsNoTracking().ProjectTo<DoctorListDto>(_mapper.ConfigurationProvider), doctorParams.PageNumber, doctorParams.PageSize);
         }
 

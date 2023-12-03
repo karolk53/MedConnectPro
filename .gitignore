@@ -5,6 +5,9 @@
 
 #custom
 client/.angular/cache/16.2.8/babel-webpack
+client/ssl/
+client/ssl/*
+client/ssl
 Api/appsettings.Development.json
 Api/projectdb.db
 Api/projectdb.db-shm
@@ -483,3 +486,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 API/appsettings.json
+API/projectdb.db

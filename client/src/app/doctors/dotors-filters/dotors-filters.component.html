@@ -6,13 +6,18 @@
                 <select class="form-select" formControlName="specialization" aria-label="Default select example">
                     <option value="All">All</option>
                     <option value="Ortopeda">Ortopeda</option>
-                    <option value="2">Spec2</option>
-                    <option value="3">Spec3</option>
+                    <option value="Kardiolog">Kardiolog</option>
+                    <option value="Dermatolog">Dermatolog</option>
+                    <option value="Neurolog">Neurolog</option>
                 </select>
             </div>
             <div class="filters--item">
                 <label>Name:</label>
                 <input formControlName="name" class="form-control" type="text">
+            </div>
+            <div class="filters--item">
+                <label>City:</label>
+                <input class="form-control" type="text">
             </div>
             <div class="filters--item">
                 <app-submit-button [disabled]="(isLoading$ | async)!" [text]="'Search'" (click)="onSubmit()"

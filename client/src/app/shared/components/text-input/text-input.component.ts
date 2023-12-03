@@ -10,6 +10,7 @@ export class TextInputComponent implements ControlValueAccessor {
   @Input() type = 'text';
   @Input() label = '';
   @Input() value = '';
+  @Input() disabledValue = false;
   @Output() fileInputChanged: EventEmitter<FileList> =
     new EventEmitter<FileList>();
 

@@ -1,0 +1,24 @@
+<div class="profile--wrapper">
+    <span>Office</span>
+    <div class="profile--data">
+        <div class="profile--data--item">
+            Name: <b>{{ data?.name === null ? "-" : data?.name }}</b>
+        </div>
+        <div class="profile--data--item">
+            Street: <b>{{ data?.street === null ? "-" : data?.street }}</b>
+        </div>
+        <div class="profile--data--item">
+            Building Number: <b>{{ data?.buildingNumber === null ? "-" : data?.buildingNumber }}</b>
+        </div>
+        <div class="profile--data--item">
+            Flat Number: <b>{{ data?.flatNumber === null ? "-" : data?.flatNumber }}</b>
+        </div>
+        <div class="profile--data--item">
+            Post Code: <b>{{ data?.postCode === null ? "-" : data?.postCode }}</b>
+        </div>
+        <div class="profile--data--item">
+            City: <b>{{ data?.city === null ? "-" : data?.city }}</b>
+        </div>
+        <!-- Dodaj kolejne pola, jeśli są dostępne -->
+    </div>
+</div>

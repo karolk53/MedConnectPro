@@ -23,6 +23,27 @@ const routes: Routes = [
     loadChildren: () =>
       import('./doctors/doctors.module').then((m) => m.DoctorsModule),
   },
+  {
+    path: 'shedule',
+    loadChildren: () =>
+      import('./shedule/shedule.module').then((m) => m.SheduleModule),
+  },
+  {
+    path: 'office',
+    loadChildren: () =>
+      import('./offices/offices.module').then((m) => m.OfficesModule),
+  },
+  {
+    path: 'services',
+    loadChildren: () =>
+      import('./services/services.module').then((m) => m.ServicesModule),
+  },
+  {
+    path: 'visit',
+    loadChildren: () =>
+      import('./visit/visit.module').then((m) => m.VisitModule),
+  },
+  
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

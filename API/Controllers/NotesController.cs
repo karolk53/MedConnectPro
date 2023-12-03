@@ -72,6 +72,7 @@ namespace API.Controllers
             return Ok(notes);
         }
 
+        [Authorize(Policy = "PatientOnly")]
         [HttpDelete("{noteId}")]
         public async Task<ActionResult> DeleteNote(int noteId)
         {
@@ -80,6 +81,8 @@ namespace API.Controllers
 
             var doctor = await _doctorRepository.GetDoctorById(note.DoctorId);
             var patient = await _patientRepository.GetPatientById(note.PatientId);
+
+            if(!patient.Notes.Contains(note)) return BadRequest("You dont have access to delete this note");
 
             doctor.Notes.Remove(note);
             if(doctor.Notes.Count() == 0){
