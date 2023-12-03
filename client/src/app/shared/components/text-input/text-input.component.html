@@ -1,5 +1,5 @@
 <div [ngClass]="{'form-floating mb-3': type !== 'file'}">
-    <input *ngIf="type !== 'file'" type={{type}} [formControl]="control" placeholder="{{label}}"
+    <input *ngIf="type !== 'file'"  type={{type}} [formControl]="control" placeholder="{{label}}" [readonly]="disabledValue"
         [ngClass]="(control.touched) ? control.invalid ? 'is-invalid' : 'is-valid' : null" class="form-control">
 
     <input *ngIf="type === 'file'" type="file" [formControl]="control" (change)="onFileInputChange($event)"

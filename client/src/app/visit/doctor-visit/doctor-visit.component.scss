@@ -1,9 +1,9 @@
 @import "../../../styles.scss";
 
-.customform {
+.visit {
   &--wrapper {
     background-color: $navbarBackground-color;
-    max-width: 600px;
+    max-width: 1000px;
     margin-top: 80px;
     padding: 40px 20px;
     margin-inline: auto;
@@ -67,5 +67,41 @@
   &--error {
     text-align: center;
     color: red;
+  }
+
+  &--list{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  &--item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include font-size(+2px);
+
+    b{
+        color: $primary-color;
+    }
+    cursor: pointer;
+    transition: 0.2s all;
+    &:hover{
+      background-color: $primary-color;
+      b{
+        color: #fff;
+      }
+    }
+
+    padding: 15px;
+    border: 2px solid black;
+
+  }
+
+  &--filters{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
   }
 }

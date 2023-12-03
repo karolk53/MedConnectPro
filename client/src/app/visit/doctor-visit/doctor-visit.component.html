@@ -1,0 +1,41 @@
+<div class="visit--wrapper">
+    <h4>Visits filters</h4>
+    <div class="visit--filters" [formGroup]="filtersForm">
+        <div class="filters--item">
+            <label>Name:</label>
+            <input formControlName="Name" class="form-control" type="text">
+        </div>
+        <div class="filters--item filters--item--spec">
+            <label>Status:</label>
+            <select class="form-select" formControlName="Status" aria-label="Default select example">
+                <option value="All">All</option>
+                <option value="Cancelled">Cancelled</option>
+                <option value="End">End</option>
+            </select>
+        </div>
+        <div class="filters--item">
+            <label>Date:</label>
+            <input formControlName="Date" class="form-control" type="date">
+        </div>
+
+        <div class="filters--item">
+            <app-submit-button [disabled]="isLoading" [text]="'Search'" (click)="changeFilters()"
+                [isLoading]="isLoading" [isBig]="false"></app-submit-button>
+        </div>
+    </div>
+    
+    <h4>Visits list</h4>
+    <div class="visit--list">
+        <div class="visit--item" *ngFor="let visit of visits" (click)="navigateToVisit(visit.id)">
+            <span>Id: <b>{{ visit.id }}.</b></span>
+            <span>Patient Name: <b>{{ visit.patientName }}</b></span>
+            <span>Planned date: <b>{{ visit.plannedDate | date:'yyyy-MM-dd HH:mm:ss' }}</b></span>
+            <span *ngIf="visit.startDate !== '0001-01-01T00:00:00'">
+                Start: <b>{{ visit.startDate | date:'yyyy-MM-dd HH:mm:ss' }}</b>
+            </span>
+            <span *ngIf="visit.startDate === '0001-01-01T00:00:00'">
+                Start: <b>Not started</b> 
+            </span>
+        </div>
+    </div>
+</div>

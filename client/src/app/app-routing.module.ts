@@ -33,6 +33,17 @@ const routes: Routes = [
     loadChildren: () =>
       import('./offices/offices.module').then((m) => m.OfficesModule),
   },
+  {
+    path: 'services',
+    loadChildren: () =>
+      import('./services/services.module').then((m) => m.ServicesModule),
+  },
+  {
+    path: 'visit',
+    loadChildren: () =>
+      import('./visit/visit.module').then((m) => m.VisitModule),
+  },
+  
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

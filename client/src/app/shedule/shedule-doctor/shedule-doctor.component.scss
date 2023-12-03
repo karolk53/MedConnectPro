@@ -38,10 +38,11 @@
     }
 
     span {
-      color: $primary-color;
+      
       width: auto;
       position: relative;
       @include font-size(+16px);
+      color: $primary-color;
       font-weight: 600;
       z-index: 1;
       background-color: $navbarBackground-color-dark;

@@ -1,0 +1,29 @@
+<div class="visit--wrapper">
+    <div class="visit--buttons">
+        <div class="visit--buttonItem">
+            <div (click)="startVisit()" class="visit--button">Start</div>
+            <span *ngIf="isStarted" style="color: green;">Visit started!</span>
+        </div>
+        <div class="visit--buttonItem">
+            <div (click)="endVisit()" class="visit--button">End</div>
+            <span *ngIf="isEnded" style="color: green;">Visit ended!</span>
+        </div>
+        <div class="visit--buttonItem">
+            <div (click)="cancelVisit()" class="visit--button">Cancel</div>
+            <span *ngIf="isCanceled" style="color: green;">Visit canceled!</span>
+        </div>
+    </div>
+
+    <div class="visit--info">
+        <span> doctorId <b> {{visit?.doctorId}}</b></span>
+        <span> note <b> {{visit?.note}}</b></span>
+        <span> plannedDate <b> {{visit?.plannedDate}}</b></span>
+        <span> startDate <b> {{visit?.startDate}}</b></span>
+        <span> endDate <b> {{visit?.endDate}}</b></span>
+        <span> patientId <b> {{visit?.patientId}}</b></span>
+        <span> patientName <b> {{visit?.patientName}}</b></span>
+        <span> doctorName <b> {{visit?.doctorName}}</b></span>
+    </div>
+</div>
+
+
