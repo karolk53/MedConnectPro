@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace APITests
 {
-    public abstract class HttpClientTest : IClassFixture<CustomWebApplicationFactory<Program>>, IDisposable
+    public abstract class HttpClientTest : IClassFixture<CustomWebApplicationFactory<Program>> , IDisposable
     {
         
         protected readonly HttpClient _httpClient;
@@ -17,12 +17,12 @@ namespace APITests
 
         public HttpClientTest(CustomWebApplicationFactory<Program> factory)
         {
-            this._factory = factory;
-            this._httpClient = factory.CreateClient(
+            _factory = factory;
+            _httpClient = factory.CreateClient(
                 new WebApplicationFactoryClientOptions { AllowAutoRedirect = false }
             );
 
-            this._serializerOptions = new JsonSerializerOptions
+            _serializerOptions = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };

@@ -45,6 +45,17 @@ namespace APITests
             context.Doctors.Add(doctor);
             await context.SaveChangesAsync();
 
+            var note = new Note
+            {
+                Description = "Note",
+                Value = 3,
+                Doctor = doctor,
+                Patient = patient
+            };
+
+            context.Notes.Add(note);
+            await context.SaveChangesAsync();
+
             return;
         }
     }

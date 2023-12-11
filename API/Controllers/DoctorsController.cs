@@ -80,7 +80,6 @@ namespace API.Controllers
             if( await _repository.SaveAllAsync()) return NoContent();
 
             return BadRequest("Failed to update profile");
-
         }
 
         [HttpPost("photo/add")]
