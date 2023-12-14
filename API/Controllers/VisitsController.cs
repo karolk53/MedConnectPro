@@ -7,6 +7,7 @@ using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Controllers
 {
@@ -16,16 +17,20 @@ namespace API.Controllers
         private readonly IVisitRepository _visitRepository;
         private readonly IPatientRepository _patientRepository;
         private readonly IDoctorRepository _doctorRepository;
+        private readonly IEmailSenderService _emailSenderService;
+
         public VisitsController(
             IVisitRepository visitRepository, 
             IMapper mapper,
             IPatientRepository patientRepository,
+            IEmailSenderService emailSenderService,
             IDoctorRepository doctorRepository)
         {
             this._visitRepository = visitRepository;
             this._mapper = mapper;
             this._patientRepository = patientRepository;
             this._doctorRepository = doctorRepository;
+            this._emailSenderService = emailSenderService;
         }
 
         [Authorize(Policy = "PatientOnly")]
@@ -54,7 +59,10 @@ namespace API.Controllers
             };
 
             _visitRepository.AddNewVisit(visit);
-            if( await _visitRepository.SaveAllAsync()) return Ok();
+            if( await _visitRepository.SaveAllAsync()){
+                await _emailSenderService.SendEmail(patient);
+                return Ok();
+            } 
 
             return BadRequest("Failed to add visit");
         }
@@ -73,16 +81,33 @@ namespace API.Controllers
 
         [Authorize(Policy = "DoctorOnly")]
         [HttpPut("start/{visitId}")]
-        public async Task<ActionResult> StartVisit(int visitId) //START DATE
+        public async Task<ActionResult> StartVisit(int visitId)
         {
+
+            var doctor = await _doctorRepository.GetDoctorById(User.GetUserId());
+            if(doctor == null) return Unauthorized();
+
             var visit = await _visitRepository.GetVisitById(visitId);
             if(visit == null) return NotFound();
 
-            if(visit.DoctorId != User.GetUserId()) return BadRequest("You dont have access to this visit");
+            if(visit.DoctorId != doctor.Id) return BadRequest("You dont have access to this visit");
 
             if(visit.Status != VisitStatus.PLANNED) return BadRequest("You can only start planned visits");
             visit.Status = VisitStatus.LAST;
             visit.StartDate = DateTime.UtcNow;
+
+            if(doctor.Cards == null) doctor.Cards = new List<PatientCard>();
+
+            if(DoctorDontHavePatient(doctor, visit.Patient))
+            {
+                var card = new PatientCard
+                {
+                    Patient = visit.Patient,
+                    Doctor = doctor,
+                    CreationDate = DateOnly.FromDateTime(DateTime.Now)
+                };
+                doctor.Cards.Add(card);
+            }
 
             if(await _visitRepository.SaveAllAsync()) return NoContent();
             return BadRequest("Failed to start visit");
@@ -91,7 +116,7 @@ namespace API.Controllers
 
         [Authorize(Policy = "DoctorOnly")]
         [HttpPut("end/{visitId}")]
-        public async Task<ActionResult> EndVisit(int visitId) //END DATE
+        public async Task<ActionResult> EndVisit(int visitId)
         {
             var visit = await _visitRepository.GetVisitById(visitId);
             if(visit == null) return NotFound();
@@ -145,6 +170,18 @@ namespace API.Controllers
             }
 
             return visits;
+        }
+        
+        private bool DoctorDontHavePatient(Doctor doctor, Patient patient)
+        {
+            foreach(PatientCard card in doctor.Cards)
+            {
+                if(card.PatientId == patient.Id)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
     }

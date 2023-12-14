@@ -12,4 +12,5 @@ public class Doctor : User
     public int? OfficeId { get; set; }
     public Office Office { get; set; }
     public List<Visit> Visits { get; set; }
+    public List<PatientCard> Cards { get; set; }
 }

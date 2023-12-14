@@ -32,6 +32,7 @@ namespace API.Extensions
             services.AddScoped<IDoctorServiceRepository, DoctorServiceRepository>();
             services.AddScoped<IOfficeRepository, OfficeRepository>();
             services.AddScoped<IVisitRepository, VisitRepository>();
+            services.AddScoped<IEmailSenderService, EmailSenderService>();
 
             return services;
         }
