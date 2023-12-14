@@ -1,0 +1,35 @@
+<div>
+    <div class="review--wrapper">
+        <h4>Add new review.</h4>
+        <form  [formGroup]="reviewForm">
+            <app-text-input [formControl]="reviewForm.controls['value']" [type]="'number'"
+            [label]="'Value'"></app-text-input>
+            <app-text-input [formControl]="reviewForm.controls['description']" [type]="'description'"
+            [label]="'Description'"></app-text-input>
+            <div *ngIf="reviewForm.hasError('loginFailed')" class="customform--error">Note error.
+            </div>
+            <div class="customform--actions">
+                <app-submit-button [isLoading]="isLoading" (clickEvent)="addNoteForDoctor()"  [disabled]="reviewForm.invalid" [text]="'Add'"></app-submit-button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <h4>Reviews</h4>
+        <div>
+            <div class="comment--wrapper" *ngIf="(doctorService.comments$ | async) as comments; else loading">
+                <div class="comment--item" *ngFor="let comment of comments">
+                    <p>{{ comment.description }}</p>
+                    <div class="comment--rating">
+                        <span>{{comment.value}}</span>
+                        <app-rating-star [rating]="comment.value"></app-rating-star>
+                    </div>
+
+                  </div>
+            </div>
+            <ng-template #loading>
+                Loading comments...
+              </ng-template>
+
+        </div>
+    </div>
+</div>

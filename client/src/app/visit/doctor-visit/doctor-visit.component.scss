@@ -1,0 +1,107 @@
+@import "../../../styles.scss";
+
+.visit {
+  &--wrapper {
+    background-color: $navbarBackground-color;
+    max-width: 1000px;
+    margin-top: 80px;
+    padding: 40px 20px;
+    margin-inline: auto;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 6px solid $primary-color;
+      top: 15px;
+      background: transparent;
+
+      z-index: -1;
+      opacity: 0.6;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 6px solid $primary-color;
+      top: -15px;
+      left: -15px;
+      background: transparent;
+
+      z-index: -1;
+      opacity: 0.4;
+    }
+
+    form {
+      width: 80%;
+      margin-inline: auto;
+    }
+  }
+
+  &--header {
+    text-align: center;
+  }
+
+  &--actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    a {
+      color: $textBlack-color;
+      text-decoration: none;
+      margin-top: 4px;
+
+      &:hover {
+        transition: 0.3s all;
+        color: $primary-color;
+      }
+    }
+  }
+
+  &--error {
+    text-align: center;
+    color: red;
+  }
+
+  &--list{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  &--item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include font-size(+2px);
+
+    b{
+        color: $primary-color;
+    }
+    cursor: pointer;
+    transition: 0.2s all;
+    &:hover{
+      background-color: $primary-color;
+      b{
+        color: #fff;
+      }
+    }
+
+    padding: 15px;
+    border: 2px solid black;
+
+  }
+
+  &--filters{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+}

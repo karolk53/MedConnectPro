@@ -1,0 +1,40 @@
+<div class="shedule--wrapper">
+    <div class="shedule--header">
+        <h1 class="mb-3">Edit Shedule</h1>
+    </div>
+    <div class="shedule--days--title">Select days:</div>
+    <div class="shedule--days">
+        <div class="shedule--days--item" (click)="toggleClass('Mon')"
+            [ngClass]="{'active': isClassActive.includes('Mon')}">Mon</div>
+        <div class="shedule--days--item" (click)="toggleClass('Tue')"
+            [ngClass]="{'active': isClassActive.includes('Tue')}">Tue</div>
+        <div class="shedule--days--item" (click)="toggleClass('Wed')"
+            [ngClass]="{'active': isClassActive.includes('Wed')}">Wed</div>
+        <div class="shedule--days--item" (click)="toggleClass('Thu')"
+            [ngClass]="{'active': isClassActive.includes('Thu')}">Thu</div>
+        <div class="shedule--days--item" (click)="toggleClass('Fri')"
+            [ngClass]="{'active': isClassActive.includes('Fri')}">Fri</div>
+        <div class="shedule--days--item" (click)="toggleClass('Sat')"
+            [ngClass]="{'active': isClassActive.includes('Sat')}">Sat</div>
+        <div class="shedule--days--item" (click)="toggleClass('Sun')"
+            [ngClass]="{'active': isClassActive.includes('Sun')}">Sun</div>
+    </div>
+
+    <div class="shedule--form">
+        <app-text-input [type]="'time'" [formControl]="scheduleForm.controls['start']"
+            [label]="'Start'"></app-text-input>
+        <app-text-input [type]="'time'" [formControl]="scheduleForm.controls['end']" [label]="'End'"></app-text-input>
+        <app-text-input [type]="'number'" [formControl]="scheduleForm.controls['length']"
+            [label]="'Length'"></app-text-input>
+        <div class="shedule--actions">
+            <app-submit-button [isLoading]="isLoading" [disabled]="scheduleForm.invalid" [text]="'Edit'"
+                (clickEvent)="onSubmit()"></app-submit-button>
+
+            <span *ngIf="isSuccess" class="shedule--succes">The graphic editing was successful.</span>
+
+        </div>
+    </div>
+
+
+
+</div>

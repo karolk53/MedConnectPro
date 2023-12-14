@@ -5,7 +5,7 @@
 
             <ul class="navBar--link">
                 <app-nav-link [text]="'Home'" [route]="'/'"></app-nav-link>
-                <app-nav-link [text]="'Find doctor'" [route]="'/doctor'"></app-nav-link>
+                <app-nav-link [text]="'Find doctor'" [route]="'/doctors'"></app-nav-link>
             </ul>
             <div class="navBar--buttons">
                 <ng-container *ngIf="(accountService.currentUser$ | async) ===null">
@@ -21,18 +21,53 @@
                         <span>{{user.email}} <i class="fa fa-solid fa-caret-down"></i></span>
                         <ul>
                             <!-- Patient -->
+                            <li class="navBar--settings--space" *ngIf="user.role === 'Patient'">Profile</li>
+
                             <li routerLink="/profile/profile-patient" *ngIf="user.role === 'Patient'">Patient
                                 profile</li>
                             <li routerLink="/profile/edit-patient-profile" *ngIf="user.role === 'Patient'">Edit Data
                             </li>
+                            <li class="navBar--settings--space" *ngIf="user.role === 'Patient'">Visits</li>
+                            <li routerLink="/visit/patient" *ngIf="user.role === 'Patient'">Patient visits
+                            </li>
                             <!-- Doctor -->
+                            <li class="navBar--settings--space" *ngIf="user.role === 'Doctor'">Profile</li>
                             <li routerLink="/profile/profile-doctor" *ngIf="user.role === 'Doctor'">Doctor
                                 profile</li>
-                            <li routerLink="/profile/edit-profile-doctor" *ngIf="user.role === 'Doctor'">Edit Data
+                            <li routerLink="/profile/edit-profile-doctor" *ngIf="user.role === 'Doctor'">Edit Profile
+                            <li class="navBar--settings--space" *ngIf="user.role === 'Doctor'">Schedule</li>
+                            <li routerLink="/shedule" *ngIf="user.role === 'Doctor'">Show Schedule
                             </li>
+                            <li routerLink="/shedule/edit" *ngIf="user.role === 'Doctor'">Edit Schedule
+                            </li>
+                            <li class="navBar--settings--space" *ngIf="user.role === 'Doctor'">Office</li>
+                            <li routerLink="/office/edit" *ngIf="user.role === 'Doctor'">Edit Office
+                            <li routerLink="/office" *ngIf="user.role === 'Doctor'">Show Office
+                            </li>
+                            <li class="navBar--settings--space" *ngIf="user.role === 'Doctor'">Services</li>
+                            <li routerLink="/services" *ngIf="user.role === 'Doctor'">Servies
+                            </li>
+                            <li class="navBar--settings--space" *ngIf="user.role === 'Doctor'">Visits</li>
+                            <li routerLink="/visit/doctor" *ngIf="user.role === 'Doctor'">Doctor Visits
+                            </li>
+
+
                             <li (click)="accountService.logout()">Logout</li>
                         </ul>
                     </div>
+                    <div class="navBar--textSizeButtonWrapper">
+                        <div (click)="changeFontSize(true)" (mouseenter)="toggleIconHover(true)"
+                            (mouseleave)="resetIconHover()" [ngClass]="{'fa-beat': isFirstButtonHovered}"
+                            class="navBar--textSizeButton">
+                            <i class="fa fa-solid fa-plus"></i>
+                        </div>
+                        <div (click)="changeFontSize(false)" [ngClass]="{'fa-beat': isSecondButtonHovered}"
+                            (mouseenter)="toggleIconHover(false)" (mouseleave)="resetIconHover()"
+                            class="navBar--textSizeButton">
+                            <i class="fa fa-solid fa-minus"></i>
+                        </div>
+                    </div>
+
 
                 </ng-container>
             </div>

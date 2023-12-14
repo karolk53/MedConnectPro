@@ -1,0 +1,22 @@
+<div class="item--container" routerLink="/doctors/{{id}}">
+    <div class="item--content item--start">
+        <div class="item--image">
+            <img [src]="photoUrl !== null ? photoUrl : 'https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png'"
+                alt="User Photo">
+        </div>
+        <div class="item--info">
+            <span class="item--info--name">{{ firstName !== null ? firstName : 'Firstname' }} {{ lastName !== null ?
+                lastName
+                : 'LastName' }}</span>
+            <span>{{ email }}</span>
+        </div>
+    </div>
+
+    <div class="item--content item--end">
+        <div class="item--rating">
+            <!-- <app-rating-star [rating]="rating"></app-rating-star> -->
+            <app-rating-star [rating]="5"></app-rating-star>
+            <div> {{ratingCount}} <span>reviews</span></div>
+        </div>
+    </div>
+</div>
