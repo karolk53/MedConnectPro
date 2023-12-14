@@ -19,7 +19,11 @@ app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localh
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "MedConnectPro");
+    }
+    );
 }
 
 app.UseHttpsRedirection();
@@ -31,3 +35,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

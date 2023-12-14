@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231115140549_SheduleEntity")]
+    partial class SheduleEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
@@ -61,9 +64,6 @@ namespace API.Data.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("OfficeId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("PWZ")
                         .HasColumnType("TEXT");
 
@@ -86,8 +86,6 @@ namespace API.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OfficeId");
 
                     b.HasIndex("PhotoId")
                         .IsUnique();
@@ -162,25 +160,6 @@ namespace API.Data.Migrations
                     b.ToTable("Notes");
                 });
 
-            modelBuilder.Entity("API.Entities.Office", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.ToTable("Offices");
-                });
-
             modelBuilder.Entity("API.Entities.Patient", b =>
                 {
                     b.Property<int>("Id")
@@ -227,30 +206,6 @@ namespace API.Data.Migrations
                     b.ToTable("Patients");
                 });
 
-            modelBuilder.Entity("API.Entities.PatientCard", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateOnly>("CreationDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("PatientCards");
-                });
-
             modelBuilder.Entity("API.Entities.Photo", b =>
                 {
                     b.Property<int>("Id")
@@ -277,9 +232,6 @@ namespace API.Data.Migrations
                     b.Property<string>("Hours")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("OfficeId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("VisitTime")
                         .HasColumnType("INTEGER");
 
@@ -287,8 +239,6 @@ namespace API.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OfficeId");
 
                     b.ToTable("Shedules");
                 });
@@ -307,55 +257,12 @@ namespace API.Data.Migrations
                     b.ToTable("Specialisations");
                 });
 
-            modelBuilder.Entity("API.Entities.Visit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("PlannedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("Visits");
-                });
-
             modelBuilder.Entity("API.Entities.Doctor", b =>
                 {
-                    b.HasOne("API.Entities.Office", "Office")
-                        .WithMany()
-                        .HasForeignKey("OfficeId");
-
                     b.HasOne("API.Entities.Photo", "Photo")
                         .WithOne("Doctor")
                         .HasForeignKey("API.Entities.Doctor", "PhotoId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Office");
 
                     b.Navigation("Photo");
                 });
@@ -409,15 +316,6 @@ namespace API.Data.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("API.Entities.Office", b =>
-                {
-                    b.HasOne("API.Entities.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
-                    b.Navigation("Address");
-                });
-
             modelBuilder.Entity("API.Entities.Patient", b =>
                 {
                     b.HasOne("API.Entities.Address", "Address")
@@ -427,80 +325,18 @@ namespace API.Data.Migrations
                     b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("API.Entities.PatientCard", b =>
-                {
-                    b.HasOne("API.Entities.Doctor", "Doctor")
-                        .WithMany("Cards")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("API.Entities.Patient", "Patient")
-                        .WithMany("Cards")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("API.Entities.Shedule", b =>
-                {
-                    b.HasOne("API.Entities.Office", "Office")
-                        .WithMany("Shedules")
-                        .HasForeignKey("OfficeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Office");
-                });
-
-            modelBuilder.Entity("API.Entities.Visit", b =>
-                {
-                    b.HasOne("API.Entities.Doctor", "Doctor")
-                        .WithMany("Visits")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("API.Entities.Patient", "Patient")
-                        .WithMany("Visits")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Patient");
-                });
-
             modelBuilder.Entity("API.Entities.Doctor", b =>
                 {
-                    b.Navigation("Cards");
-
                     b.Navigation("DoctorServices");
 
                     b.Navigation("DoctorsSpecialisations");
 
                     b.Navigation("Notes");
-
-                    b.Navigation("Visits");
-                });
-
-            modelBuilder.Entity("API.Entities.Office", b =>
-                {
-                    b.Navigation("Shedules");
                 });
 
             modelBuilder.Entity("API.Entities.Patient", b =>
                 {
-                    b.Navigation("Cards");
-
                     b.Navigation("Notes");
-
-                    b.Navigation("Visits");
                 });
 
             modelBuilder.Entity("API.Entities.Photo", b =>

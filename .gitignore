@@ -483,3 +483,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 API/appsettings.json
+API/projectdb.db

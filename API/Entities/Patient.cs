@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace API.Entities;
+﻿namespace API.Entities;
 
 public class Patient : User
 {
@@ -8,4 +6,6 @@ public class Patient : User
     public string PESEL { get; set; }
     public DateOnly DateOfBirth { get; set; }
     public List<Note> Notes { get; set; }
+    public List<Visit> Visits { get; set; }
+    public List<PatientCard> Cards { get; set; }
 }

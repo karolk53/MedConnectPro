@@ -25,6 +25,8 @@ namespace API.Data
             return await _context.Doctors
                             .Include(p => p.Photo)
                             .Include(n => n.Notes)
+                            .Include(o => o.Office).ThenInclude(s => s.Shedules)
+                            .Include(v => v.Visits)
                             .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -32,6 +34,7 @@ namespace API.Data
         {
             return _context.Doctors
                     .Where(x => x.Id == id)
+                    .Include(o => o.Office)
                     .Include(ds => ds.DoctorServices)
                     .Include(s => s.DoctorsSpecialisations)
                     .ThenInclude(z => z.Specialisation)
@@ -43,7 +46,24 @@ namespace API.Data
         {
             var query = _context.Doctors.AsQueryable();
 
-            query = query.Where(x => x.DoctorsSpecialisations.Any(x => x.Specialisation.Name == doctorParams.Specialisation));
+            if(!string.IsNullOrEmpty(doctorParams.Specialisation)){
+                query = query.Where(x => x.DoctorsSpecialisations.Any(x => x.Specialisation.Name == doctorParams.Specialisation));
+            }
+
+            if(!string.IsNullOrEmpty(doctorParams.SortByTotalRating)){
+                query = doctorParams.SortByTotalRating switch
+                {
+                    "Asc" => query.OrderBy(x => x.TotalRating),
+                    "Desc" => query.OrderByDescending(x => x.TotalRating),
+                    _ => query.OrderBy(x => x.TotalRating)
+                };
+            }
+
+            if(!string.IsNullOrEmpty(doctorParams.City))
+            {
+                query = query.Where(x => x.Office.Address.City == doctorParams.City);
+            }
+            
 
             return await PagedList<DoctorListDto>.CreateAsync(query.AsNoTracking().ProjectTo<DoctorListDto>(_mapper.ConfigurationProvider), doctorParams.PageNumber, doctorParams.PageSize);
         }

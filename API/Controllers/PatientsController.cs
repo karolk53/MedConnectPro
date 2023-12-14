@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using API.DTOs;
+﻿using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Helpers;
@@ -10,13 +9,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+[Authorize(Policy = "PatientOnly")]
 public class PatientsController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IPatientRepository _patientRepository;
+        private readonly IVisitRepository _visitRepository;
 
-    public PatientsController(IPatientRepository patientRepository, IMapper mapper)
+    public PatientsController(IPatientRepository patientRepository, IMapper mapper, IVisitRepository visitRepository)
     {
+        this._visitRepository = visitRepository;
         this._patientRepository = patientRepository;
         this._mapper = mapper;
     }
@@ -30,14 +32,13 @@ public class PatientsController : BaseApiController
         return Ok(patients);
     }
 
-    [Authorize(Policy = "PatientOnly")]
+    
     [HttpGet("me")]
     public async Task<ActionResult<PatientProfileDto>> GetPatient()
     {
         return await _patientRepository.GetPatientByIdAsync(User.GetUserId());
     }
 
-    [Authorize(Policy = "PatientOnly")]
     [HttpPut("update")]
     public async Task<ActionResult> UpdatePatientsProfile(PatientUpdateDto updateDto)
     {
@@ -53,8 +54,6 @@ public class PatientsController : BaseApiController
         return BadRequest("Faild to update user!");
     }
 
-
-    [Authorize(Policy = "PatientOnly")]
     [HttpPut("address/update")]
     public async Task<ActionResult<PatientProfileDto>> UpdatePatientsAddress(AddressDto addressDto)
     {
@@ -68,6 +67,13 @@ public class PatientsController : BaseApiController
         return BadRequest("Faild to update address!");
     }
 
+    [HttpGet("visits")]
+    public async Task<ActionResult<IEnumerable<Visit>>> GetPatientsVisitsList([FromQuery]VisitParams visitParams)
+    {
+        var patientId = User.GetUserId();
+        var visits = await _visitRepository.GetPatientVisitsListAsync(patientId, visitParams);
+        return Ok(visits);
+    }
 
 
 

@@ -7,8 +7,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace API.Controllers
 {
+    [Authorize(Policy = "DoctorOnly")]
     public class DoctorsController : BaseApiController
     {
         private readonly IDoctorRepository _repository;
@@ -17,6 +19,7 @@ namespace API.Controllers
         private readonly IPhotoService _photoService;
         private readonly IPhotoRepository _photoRepository;
         private readonly IDoctorServiceRepository _doctorServiceRepository;
+        private readonly IVisitRepository _visitRepository;
         
         public DoctorsController(
             IDoctorRepository repository,
@@ -24,17 +27,20 @@ namespace API.Controllers
             ISpecialisationRepository specialisationRepository,
             IPhotoService photoService,
             IDoctorServiceRepository doctorServiceRepository,
+            IVisitRepository visitRepository,
             IMapper mapper)
         {
             this._photoRepository = photoRepository;
             this._photoService = photoService;
             this._specialisationRepository = specialisationRepository;
             this._doctorServiceRepository = doctorServiceRepository;
+            this._visitRepository = visitRepository;
             this._mapper = mapper;
             this._repository = repository;
 
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<PagedList<DoctorListDto>>> GetDoctorsListAsync([FromQuery]DoctorParams doctorParams)
         {
@@ -44,7 +50,6 @@ namespace API.Controllers
         }
 
 
-        [Authorize(Policy = "DoctorOnly")]
         [HttpGet("profile")]
         public async Task<ActionResult<DoctorDto>> GetDoctorProfile()
         {
@@ -52,6 +57,7 @@ namespace API.Controllers
             return Ok(doctor);
         }
 
+        [AllowAnonymous]
         [HttpGet("{doctorId}")]
         public async Task<ActionResult<DoctorDto>> GetDoctorProfileByPatient(int doctorId)
         {
@@ -63,7 +69,6 @@ namespace API.Controllers
 
         }
 
-        [Authorize(Policy = "DoctorOnly")]
         [HttpPut("update")]
         public async Task<ActionResult> UpdateDoctorProfile(DoctorUpdateDto doctorUpdateDto)
         {
@@ -75,23 +80,20 @@ namespace API.Controllers
             if( await _repository.SaveAllAsync()) return NoContent();
 
             return BadRequest("Failed to update profile");
-
         }
 
-        [Authorize(Policy = "DoctorOnly")]
         [HttpPost("photo/add")]
         public async Task<ActionResult<PhotoDto>> AddDoctorPhoto(IFormFile file)
         {
             var doctor = await _repository.GetDoctorById(User.GetUserId());
-
             if(doctor == null) return NotFound();
-            if(doctor.Photo != null)
-            {
-                await _photoService.DeletePhotoAsync(doctor.Photo.PublicId);
-                _photoRepository.DeletePhoto(doctor.Photo);
-            }
 
-            var result =  await _photoService.AddPhotoAsync(file);
+            if(doctor.Photo != null){
+                var r = await _photoService.DeletePhotoAsync(doctor.Photo.PublicId);
+                if(r.Error != null) return BadRequest(r.Error.Message);
+            }  
+
+            var result = await _photoService.AddPhotoAsync(file);
             if(result.Error != null) return BadRequest(result.Error.Message);
 
             var photo = new Photo 
@@ -109,7 +111,6 @@ namespace API.Controllers
 
         }
 
-        [Authorize(Policy = "DoctorOnly")]
         [HttpDelete("photo/delete")]
         public async Task<ActionResult> DeletePhoto()
         {
@@ -133,7 +134,6 @@ namespace API.Controllers
 
         }
 
-        [Authorize(Policy = "DoctorOnly")]
         [HttpPost("services")]
         public async Task<ActionResult<DoctorServiceDto>> AddNewDoctorService(DoctorServiceDto serviceDto)
         {
@@ -157,7 +157,6 @@ namespace API.Controllers
 
         }
 
-        [Authorize(Policy = "DoctorOnly")]
         [HttpDelete("services/delete/{servId}")]
         public async Task<ActionResult> DeleteDoctorService(int servId)
         {
@@ -177,5 +176,41 @@ namespace API.Controllers
             return BadRequest("Failed to delete service");
 
         }
+
+        [HttpPut("services/update/{serviceId}")]
+        public async Task<ActionResult> UpdateService(int serviceId, DoctorServiceUpdateDto serviceDto)
+        {
+            var service = await _doctorServiceRepository.GetDoctorService(serviceId);
+            if(service == null) return NotFound();
+
+            var doctor = await _repository.GetDoctorById(User.GetUserId());
+            if(doctor == null) return Unauthorized();
+
+            _mapper.Map(serviceDto, service);
+
+            if(await _doctorServiceRepository.SaveAllAsync()) return NoContent();
+
+            return BadRequest("Failed to update service");
+        }
+
+        [HttpGet("visits")]
+        public async Task<ActionResult<IEnumerable<VisitDto>>> GetDoctorsVisitsList()
+        {
+            var visits = await _visitRepository.GetDoctorVisitsList(User.GetUserId());
+            return Ok(visits);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("planned/{doctorId}")]
+        public async Task<ActionResult<IEnumerable<DateTime>>> GetCurrentShedule(int doctorId, [FromQuery]string startDate,[FromQuery]string endDate)
+        {
+            var doctor = await _repository.GetDoctorById(doctorId);
+            if(doctor == null) return NotFound();
+
+            var shedule = await _visitRepository.GetPlannedVisits(doctorId, startDate, endDate);
+
+            return Ok(shedule);
+        }
+
     }
 }
