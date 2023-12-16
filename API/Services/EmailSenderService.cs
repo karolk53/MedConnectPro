@@ -10,7 +10,7 @@ namespace API.Services
 {
     public class EmailSenderService : IEmailSenderService
     {
-        public async Task<bool> SendEmail(Patient patient)
+        public async Task<bool> SendVisitRegisteredEmail(Patient patient)
         {
             var sender = new SmtpSender(() => new SmtpClient("localhost")
             {
@@ -28,11 +28,10 @@ namespace API.Services
             Email.DefaultSender = sender;
 
             var email = await Email
-                .From("system@example.com")
-                .To("user@test.pl", "John")
-                .Subject("Test!")
+                .From("medconnect@example.com")
+                .To(patient.Email, patient.FirstName)
+                .Subject("Visit registered")
                 .UsingTemplate(template.ToString(), patient)
-                //.Body("Testing email sending")
                 .SendAsync();
 
             return email.Successful;

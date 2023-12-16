@@ -27,6 +27,7 @@ namespace API.Data
                             .Include(n => n.Notes)
                             .Include(o => o.Office).ThenInclude(s => s.Shedules)
                             .Include(v => v.Visits)
+                            .Include(c => c.Cards)
                             .FirstOrDefaultAsync(x => x.Id == id);
         }
 

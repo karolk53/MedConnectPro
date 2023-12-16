@@ -5,7 +5,7 @@ namespace API.DTOs
     public class VisitAddDto
     {
         [Required]
-        public string Note { get; set; }
+        public string Description { get; set; }
         [Required]
         public string PlannedDate { get; set; }
     }

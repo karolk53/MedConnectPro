@@ -6,6 +6,7 @@ namespace API.Entities
     {
         public int Id { get; set; }
         public VisitStatus Status { get; set; }
+        public string Description { get; set; }
         public string Note { get; set; }
         public DateTime PlannedDate { get; set; }
         public DateTime? StartDate { get; set; }

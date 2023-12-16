@@ -18,12 +18,14 @@ namespace API.Controllers
         private readonly IPatientRepository _patientRepository;
         private readonly IDoctorRepository _doctorRepository;
         private readonly IEmailSenderService _emailSenderService;
+        private readonly IPatientCardRepository _patientCardRepository;
 
         public VisitsController(
             IVisitRepository visitRepository, 
             IMapper mapper,
             IPatientRepository patientRepository,
             IEmailSenderService emailSenderService,
+            IPatientCardRepository patientCardRepository,
             IDoctorRepository doctorRepository)
         {
             this._visitRepository = visitRepository;
@@ -31,6 +33,7 @@ namespace API.Controllers
             this._patientRepository = patientRepository;
             this._doctorRepository = doctorRepository;
             this._emailSenderService = emailSenderService;
+            this._patientCardRepository = patientCardRepository;
         }
 
         [Authorize(Policy = "PatientOnly")]
@@ -51,7 +54,7 @@ namespace API.Controllers
 
             var visit = new Visit
             {
-                Note = visitDto.Note,
+                Description = visitDto.Description,
                 Status = VisitStatus.PLANNED,
                 PlannedDate = visitDate,
                 Doctor = doctor,
@@ -60,7 +63,7 @@ namespace API.Controllers
 
             _visitRepository.AddNewVisit(visit);
             if( await _visitRepository.SaveAllAsync()){
-                await _emailSenderService.SendEmail(patient);
+                await _emailSenderService.SendVisitRegisteredEmail(patient);
                 return Ok();
             } 
 
@@ -98,7 +101,7 @@ namespace API.Controllers
 
             if(doctor.Cards == null) doctor.Cards = new List<PatientCard>();
 
-            if(DoctorDontHavePatient(doctor, visit.Patient))
+            if(DoctorDontHavePatient(doctor, visit.PatientId))
             {
                 var card = new PatientCard
                 {
@@ -106,7 +109,7 @@ namespace API.Controllers
                     Doctor = doctor,
                     CreationDate = DateOnly.FromDateTime(DateTime.Now)
                 };
-                doctor.Cards.Add(card);
+                _patientCardRepository.AddNewCard(card);
             }
 
             if(await _visitRepository.SaveAllAsync()) return NoContent();
@@ -116,7 +119,7 @@ namespace API.Controllers
 
         [Authorize(Policy = "DoctorOnly")]
         [HttpPut("end/{visitId}")]
-        public async Task<ActionResult> EndVisit(int visitId)
+        public async Task<ActionResult> EndVisit(int visitId,[FromBody]JsonElement note)
         {
             var visit = await _visitRepository.GetVisitById(visitId);
             if(visit == null) return NotFound();
@@ -126,6 +129,9 @@ namespace API.Controllers
             if(visit.Status != VisitStatus.LAST) return BadRequest("You can only end lasting visits");
             visit.Status = VisitStatus.COMPLETED;
             visit.EndDate = DateTime.UtcNow;
+
+            var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(note);
+            visit.Note = dict["note"];
 
             if(await _visitRepository.SaveAllAsync()) return NoContent();
             return BadRequest("Failed to end visit");
@@ -146,6 +152,14 @@ namespace API.Controllers
             
             if(await _visitRepository.SaveAllAsync()) return NoContent();
             return BadRequest("Failed to cancel visit");
+        }
+
+        [Authorize(Policy = "DoctorOnly")]
+        [HttpGet("patient/{patientId}")]
+        public async Task<ActionResult<IEnumerable<VisitDto>>> GetPatientVisits([FromQuery]VisitParams visitParams, int patientId)
+        {
+            var visits = await _visitRepository.GetPatientVisitsListAsync(patientId, visitParams);
+            return Ok(visits);
         }
 
         private bool ValidDate(DateTime visitDate, Doctor doctor)
@@ -172,11 +186,11 @@ namespace API.Controllers
             return visits;
         }
         
-        private bool DoctorDontHavePatient(Doctor doctor, Patient patient)
+        private bool DoctorDontHavePatient(Doctor doctor, int patientId)
         {
             foreach(PatientCard card in doctor.Cards)
             {
-                if(card.PatientId == patient.Id)
+                if(card.PatientId == patientId)
                 {
                     return false;
                 }

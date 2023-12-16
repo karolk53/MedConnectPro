@@ -4,6 +4,6 @@ namespace API.Interfaces
 {
     public interface IEmailSenderService
     {
-        Task<bool> SendEmail(Patient patient);
+        Task<bool> SendVisitRegisteredEmail(Patient patient);
     }
 }

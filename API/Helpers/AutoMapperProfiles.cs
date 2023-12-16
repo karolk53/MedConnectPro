@@ -1,3 +1,4 @@
+using System.Text;
 using API.DTOs;
 using API.Entities;
 using AutoMapper;
@@ -53,6 +54,11 @@ namespace API.Helpers
                 .ForMember(dest => dest.DayOfWeek, opt => opt.MapFrom(src => src.PlannedDate.DayOfWeek))
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.PlannedDate.Date.ToString()))
                 .ForMember(dest => dest.Hour, opt => opt.MapFrom(src => src.PlannedDate.TimeOfDay.ToString()));
+
+            CreateMap<PatientCard, PatientCardList>()
+                .ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => string.Join(" ", src.Patient.FirstName, src.Patient.LastName)))
+                .ForMember(dest => dest.PatientPESEL, opt => opt.MapFrom(src => src.Patient.PESEL))
+                .ForMember(dest => dest.LastVisitDate, opt => opt.MapFrom(src => src.Patient.Visits.Where(x => x.DoctorId == src.DoctorId).FirstOrDefault().PlannedDate));
         }
     }
 }

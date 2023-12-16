@@ -1,5 +1,7 @@
+using API.DTOs;
+using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -8,17 +10,19 @@ namespace API.Controllers
     public class PatientCardsController : BaseApiController
     {
         private readonly IDoctorRepository _doctorRepository;
+        private readonly IPatientCardRepository _patientCardRepository;
 
-        public PatientCardsController(IDoctorRepository doctorRepository)
+        public PatientCardsController(IDoctorRepository doctorRepository, IPatientCardRepository patientCardRepository)
         {
-            this._doctorRepository = doctorRepository;
-            
+            this._doctorRepository = doctorRepository; 
+            this._patientCardRepository = patientCardRepository;
         }
 
         [HttpGet]
-        public async Task GetDoctorCards()
+        public async Task<ActionResult<IEnumerable<PatientCardList>>> GetDoctorCards([FromQuery]CardParams cardParams)
         {
-            //var doctor = 
+            var cards = await _patientCardRepository.GetDoctorCards(User.GetUserId(), cardParams);
+            return Ok(cards);
         }
     }
 }
