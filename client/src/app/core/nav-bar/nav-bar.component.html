@@ -55,21 +55,26 @@
                             <li (click)="accountService.logout()">Logout</li>
                         </ul>
                     </div>
-                    <div class="navBar--textSizeButtonWrapper">
-                        <div (click)="changeFontSize(true)" (mouseenter)="toggleIconHover(true)"
-                            (mouseleave)="resetIconHover()" [ngClass]="{'fa-beat': isFirstButtonHovered}"
-                            class="navBar--textSizeButton">
-                            <i class="fa fa-solid fa-plus"></i>
-                        </div>
-                        <div (click)="changeFontSize(false)" [ngClass]="{'fa-beat': isSecondButtonHovered}"
-                            (mouseenter)="toggleIconHover(false)" (mouseleave)="resetIconHover()"
-                            class="navBar--textSizeButton">
-                            <i class="fa fa-solid fa-minus"></i>
-                        </div>
-                    </div>
+
 
 
                 </ng-container>
+                <div class="navBar--textSizeButtonWrapper">
+                    <div (click)="changeFontSize(true)" (mouseenter)="toggleIconHover(true)"
+                        (mouseleave)="resetIconHover()" [ngClass]="{'fa-beat': isFirstButtonHovered}"
+                        class="navBar--textSizeButton">
+                        <i class="fa fa-solid fa-plus"></i>
+                    </div>
+                    <div (click)="changeFontSize(false)" [ngClass]="{'fa-beat': isSecondButtonHovered}"
+                        (mouseenter)="toggleIconHover(false)" (mouseleave)="resetIconHover()"
+                        class="navBar--textSizeButton">
+                        <i class="fa fa-solid fa-minus"></i>
+                    </div>
+                </div>
+                <div class="navBar--language">
+                    <span>ENG</span>
+                    <i class="fa fa-solid fa-chevron-down"></i>
+                </div>
             </div>
 
         </div>

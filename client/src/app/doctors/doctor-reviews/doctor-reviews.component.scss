@@ -70,50 +70,45 @@
   }
 }
 
-form{
+form {
   width: 400px;
 }
 
-
-.review{
-  &--wrapper{
+.review {
+  &--wrapper {
     padding: 10px 30px;
   }
 }
 
-
-.comment{
-  &--wrapper{
+.comment {
+  &--wrapper {
     display: flex;
     flex-direction: column;
     gap: 30px;
   }
 
-  &--item{
-    border: 2px solid black;
+  &--item {
+    border: 2px solid $primary-color;
     border-radius: 20px;
     padding: 40px;
     width: 280px;
     min-height: 80px;
     position: relative;
 
-    p{
+    p {
       text-wrap: wrap;
       width: 200px;
       word-wrap: break-word;
-
     }
-
   }
 
-  &--rating{
+  &--rating {
     position: absolute;
     top: 15px;
     right: 20px;
 
-    span{
+    span {
       font-weight: 600;
     }
   }
-
 }

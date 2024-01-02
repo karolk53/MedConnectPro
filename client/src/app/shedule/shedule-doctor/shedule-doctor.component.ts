@@ -14,7 +14,34 @@ export class SheduleDoctorComponent implements OnInit {
   ngOnInit() {
     this.scheduleService.scheduleInfo$.subscribe((scheduleInfo) => {
       console.log('scheduleInfo', scheduleInfo);
-      this.data = scheduleInfo;
+      if (scheduleInfo) {
+        this.data = this.sortScheduleByWeekDay(scheduleInfo);
+      } else {
+        this.data = []; // Lub inna obsługa, gdy scheduleInfo ma wartość null
+      }
     });
+  }
+
+  sortScheduleByWeekDay(scheduleInfo: any[]): any[] {
+    if (!scheduleInfo || scheduleInfo.length === 0) {
+      return [];
+    }
+
+    const daysOrder = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ];
+
+    // Sortowanie danych po dniu tygodnia
+    scheduleInfo.sort((a, b) => {
+      return daysOrder.indexOf(a.weekDay) - daysOrder.indexOf(b.weekDay);
+    });
+
+    return scheduleInfo;
   }
 }

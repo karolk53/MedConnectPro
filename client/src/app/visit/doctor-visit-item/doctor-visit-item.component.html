@@ -15,15 +15,19 @@
     </div>
 
     <div class="visit--info">
-        <span> doctorId <b> {{visit?.doctorId}}</b></span>
-        <span> note <b> {{visit?.note}}</b></span>
-        <span> plannedDate <b> {{visit?.plannedDate}}</b></span>
-        <span> startDate <b> {{visit?.startDate}}</b></span>
-        <span> endDate <b> {{visit?.endDate}}</b></span>
-        <span> patientId <b> {{visit?.patientId}}</b></span>
-        <span> patientName <b> {{visit?.patientName}}</b></span>
-        <span> doctorName <b> {{visit?.doctorName}}</b></span>
+        <span> Note <b> {{visit?.note}}</b></span>
+        <span> Planned Date <b> {{visit?.plannedDate | date:'yyyy-MM-dd HH:mm:ss'}}</b></span>
+        <span> Start Date <b> {{visit?.startDate | date:'yyyy-MM-dd HH:mm:ss'}}</b></span>
+        <span> End Date <b> {{visit?.endDate | date:'yyyy-MM-dd HH:mm:ss'}}</b></span>
+        <span> Patient Id <b> {{visit?.patientId}}</b></span>
+        <span> Patient Name <b> {{visit?.patientName}}</b></span>
+        <span> Doctor Name <b> {{visit?.doctorName}}</b></span>
+        <span><b> Note:</b></span>
     </div>
+    <div>
+        <textarea style="width: 650px;"></textarea>
+    </div>
+    <form action="">
+        <app-submit-button style="margin-left: -75px;" text="Add note"></app-submit-button>
+    </form>
 </div>
-
-

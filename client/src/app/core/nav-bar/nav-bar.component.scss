@@ -214,6 +214,19 @@
     border-radius: 20px;
     cursor: pointer;
   }
+
+  &--language {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 5px;
+    gap: 6px;
+    font-weight: 500;
+    border: 2px solid black;
+  }
 }
 
 .navbarLogo {
