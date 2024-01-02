@@ -50,7 +50,9 @@
                             <li class="navBar--settings--space" *ngIf="user.role === 'Doctor'">Visits</li>
                             <li routerLink="/visit/doctor" *ngIf="user.role === 'Doctor'">Doctor Visits
                             </li>
-
+                            <li class="navBar--settings--space" *ngIf="user.role === 'Doctor'">Cards</li>
+                            <li routerLink="/visit/doctor" *ngIf="user.role === 'Doctor'">Doctor Cards
+                            </li>
 
                             <li (click)="accountService.logout()">Logout</li>
                         </ul>

@@ -53,7 +53,7 @@ export class AddVisitComponent implements OnInit {
       });
 
       const requestBody = {
-        Description: note,
+        Note: note,
         PlannedDate: plannedDate,
       };
 
