@@ -63,7 +63,7 @@ namespace API.Controllers
 
             _visitRepository.AddNewVisit(visit);
             if( await _visitRepository.SaveAllAsync()){
-                await _emailSenderService.SendVisitRegisteredEmail(patient);
+                await _emailSenderService.SendVisitRegisteredEmail(patient, visit);
                 return Ok();
             } 
 

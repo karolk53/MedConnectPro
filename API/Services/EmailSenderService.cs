@@ -10,7 +10,7 @@ namespace API.Services
 {
     public class EmailSenderService : IEmailSenderService
     {
-        public async Task<bool> SendVisitRegisteredEmail(Patient patient)
+        public async Task<bool> SendVisitRegisteredEmail(Patient patient, Visit visit)
         {
             var sender = new SmtpSender(() => new SmtpClient("localhost")
             {
@@ -21,7 +21,14 @@ namespace API.Services
 
             StringBuilder template = new();
             template.AppendLine("Dear @Model.FirstName,");
-            template.AppendLine("<p>Your vist has been registered successfully</p>");
+            template.AppendLine(
+                "<p>Your vist to dr " + 
+                visit.Doctor.FirstName + 
+                " " +
+                visit.Doctor.LastName + 
+                " has been registered successfully on " + 
+                visit.PlannedDate.ToString() + 
+                "</p>");
             template.AppendLine("-MedConnect Team");
 
             Email.DefaultRenderer = new RazorRenderer();
