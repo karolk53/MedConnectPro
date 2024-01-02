@@ -1,1 +1,38 @@
-<p>doctor-cards works!</p>
+<div class="visit--wrapper">
+    <h4>Cards filters</h4>
+    <div class="visit--filters" [formGroup]="filtersForm">
+        <div class="filters--item">
+            <label>Name:</label>
+            <input formControlName="Name" class="form-control" type="text">
+        </div>
+        <div class="filters--item">
+            <label>PESEL:</label>
+            <input formControlName="Pesel" class="form-control" type="text">
+        </div>
+
+        <div class="filters--item">
+            <app-submit-button [disabled]="isLoading" [text]="'Search'" (click)="changeFilters()"
+                [isLoading]="isLoading" [isBig]="false"></app-submit-button>
+        </div>
+    </div>
+
+    <h4>Cards list</h4>
+    <div class="visit--list">
+        <div class="visit--item" *ngFor="let card of cards">
+            <div>
+                <span>Patient: <b>{{ card.patientName }}</b></span>
+                <span style="margin-left: 20px;">Pesel: <b>{{ card.patientPESEL }}</b></span>
+            </div>
+
+            <!-- <span>Id: <b>{{ visit.id }}.</b></span>
+            <span>Patient Name: <b>{{ visit.patientName }}</b></span>
+            <span>Planned date: <b>{{ visit.plannedDate | date:'yyyy-MM-dd HH:mm:ss' }}</b></span>
+            <span *ngIf="visit.startDate !== '0001-01-01T00:00:00'">
+                Start: <b>{{ visit.startDate | date:'yyyy-MM-dd HH:mm:ss' }}</b>
+            </span>
+            <span *ngIf="visit.startDate === '0001-01-01T00:00:00'">
+                Start: <b>Not started</b>
+            </span> -->
+        </div>
+    </div>
+</div>

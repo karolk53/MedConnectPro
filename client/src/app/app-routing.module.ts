@@ -43,7 +43,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('./visit/visit.module').then((m) => m.VisitModule),
   },
-  
+  {
+    path: 'cards',
+    loadChildren: () =>
+      import('./cards/cards.module').then((m) => m.CardsModule),
+  },
+
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
