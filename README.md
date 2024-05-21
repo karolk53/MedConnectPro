@@ -49,3 +49,7 @@ Here we can see a few screenshots of user interface.
  <img src="https://github.com/karolk53/MedConnectPro/blob/29235a1fd8b0bb951d0b3903850a8c5683dab0e2/screenshots/calendary.png"  height="300px"/>
    
 ## WCAG 2.1
+
+We tried to make the application available for people with disfunctions, so that it complies with WCAG 2.1 guidlines. This was accomplished by adjusting the site's color scheme so that people with color blindness could use it comfortably and we implemented an option to change the font size.
+
+
