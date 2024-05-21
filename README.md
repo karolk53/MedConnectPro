@@ -36,6 +36,16 @@ We have done also some simple unit and integration tests of main functionalities
 
 Here we can see a few screenshots of user interface.
 
-1. 
+1. Doctors list overview - Patient can review list of doctors that are already registered in the system and filter the list by choosing doctor's specialisation, enter his/her name or city where he/she works.
 
+   <img src="https://github.com/karolk53/MedConnectPro/blob/29235a1fd8b0bb951d0b3903850a8c5683dab0e2/screenshots/list.png"  height="300px"/>
+
+2. Schedule - Doctor can create schedule for his office by choosing day of the week and enter start time, end time and length of single visit. 
+
+  <img src="https://github.com/karolk53/MedConnectPro/blob/29235a1fd8b0bb951d0b3903850a8c5683dab0e2/screenshots/schedule.png"  height="300px"/>
+
+3. Calendary - when someone visit doctor's profile site they will for example see a clendary of work. Crosed out hours are taken, by clicking the available hour user will redirected to form that is responsible for register new visit.
+
+ <img src="https://github.com/karolk53/MedConnectPro/blob/29235a1fd8b0bb951d0b3903850a8c5683dab0e2/screenshots/calendary.png"  height="300px"/>
+   
 ## WCAG 2.1
