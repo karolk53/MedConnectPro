@@ -7,7 +7,7 @@ The idea for this project came when we realised that most of daily services are 
 
 ## Basic functionalities
 
-Here you can some basic functionalities implemented in our project.
+Here are some basic functionalities implemented in our project.
 
 | Patient  | Doctor|
 | ------------- | ------------- |
